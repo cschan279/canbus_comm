@@ -114,24 +114,3 @@ class CanComm:
 
     def __del__(self):
         canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
-
-
-
-#通道2接收数据
-a = ubyte_array(0, 0, 0, 0, 0, 0, 0, 0)
-vci_can_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0, a, b)#复位接收缓存
-ret = canDLL.VCI_Receive(VCI_USBCAN2, 0, 1, byref(vci_can_obj), 2500, 0)
-#print(ret)
-while ret <= 0:#如果没有接收到数据，一直循环查询接收。
-        ret = canDLL.VCI_Receive(VCI_USBCAN2, 0, 1, byref(vci_can_obj), 2500, 0)
-if ret > 0:#接收到一帧数据
-    print('CAN2通道接收成功\r\n')
-    print('ID：')
-    print(vci_can_obj.ID)
-    print('DataLen：')
-    print(vci_can_obj.DataLen)
-    print('Data：')
-    print(list(vci_can_obj.Data))
-
-#关闭
-canDLL.VCI_CloseDevice(VCI_USBCAN2, 0)
