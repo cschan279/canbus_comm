@@ -113,7 +113,7 @@ class CanComm:
             return recv_obj.ID, list(recv_obj.Data)
 
     def __del__(self):
-        canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
+        self.canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
 
 
 if __name__ == "__main__":
