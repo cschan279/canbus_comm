@@ -76,7 +76,8 @@ class CanComm:
         return
 
     def init_dev_conn(self, can_dev):
-        ret = self.canLIB.VCI_InitCAN(VCI_USBCAN2, 0, can_dev, byref(vci_initconfig))
+        ret = self.canLIB.VCI_InitCAN(VCI_USBCAN2, 0, can_dev,
+                                      byref(self.vci_initconfig))
         if ret == STATUS_OK:
             print('connect VCI_InitCAN-{} success\r\n'.format(i))
         else:
