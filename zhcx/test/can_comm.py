@@ -79,15 +79,15 @@ class CanComm:
         ret = self.canLIB.VCI_InitCAN(VCI_USBCAN2, 0, can_dev,
                                       byref(self.vci_initconfig))
         if ret == STATUS_OK:
-            print('connect VCI_InitCAN-{} success\r\n'.format(i))
+            print('connect VCI_InitCAN-{} success\r\n'.format(can_dev))
         else:
-            m = 'connect VCI_InitCAN-{} fail\r\n'.format(i)
+            m = 'connect VCI_InitCAN-{} fail\r\n'.format(can_dev)
             raise ConnectionError(m)
         ret = self.canLIB.VCI_StartCAN(VCI_USBCAN2, 0, can_dev)
         if ret == STATUS_OK:
-            print('connect VCI_StartCAN-{} success\r\n'.format(i))
+            print('connect VCI_StartCAN-{} success\r\n'.format(can_dev))
         else:
-            m = 'connect VCI_StartCAN-{} fail\r\n'.format(i)
+            m = 'connect VCI_StartCAN-{} fail\r\n'.format(can_dev)
             raise ConnectionError(m)
         return
 
