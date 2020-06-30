@@ -24,7 +24,7 @@ def form_data(fault=0x0, signal=0x0, content=[0x00]*6):
     assert_var(signal, int, 2**12)
     assert isinstance(content, list)
     for i in content:
-        assert_var(var, int, 2*8)
+        assert_var(i, int, 2*8)
     byt_12 = signal + fault * 2**12
     b12 = [(byt_12 // 256), (byt_12 % 256)]
     res = b12 + content
