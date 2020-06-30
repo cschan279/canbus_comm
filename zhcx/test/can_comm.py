@@ -107,11 +107,15 @@ class CanComm:
                                data_array, reserved_array())
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(recv_obj), 2500, 0)
-        while ret <= 0:
+        count = 0
+        while ret <= 0 and count < 10:
             ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
-                                     byref(vci_can_obj), 2500, 0)
+                                     byref(recv_obj), 2500, 0)
+            count += 1
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
+        else: 
+            raise ConnectionError('Wait for read times out', can_dev)
 
     def __del__(self):
         self.canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
