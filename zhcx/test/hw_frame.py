@@ -10,7 +10,7 @@ def assert_var(var, typ, max_limit):
 
 
 def form_id(ptc=0x0d, addr=0x00, cmd=0x50, src=0x1, cnt=0x0):
-    val_range = (6,7,8,0,0)
+    val_range = (6,7,8,1,1)
     pos = (23,16,8,7,0)
     var = (ptc, addr, cmd, src, cnt)
     res = 0
