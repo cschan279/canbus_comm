@@ -117,6 +117,7 @@ class CanComm:
         self.canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
 
 
+
 if __name__ == "__main__":
     c = CanComm('./ControlCAN.dll', [0,1])
     c.send(0, 33, [1,3,5,7,9,2,4,6])
