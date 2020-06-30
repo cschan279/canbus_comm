@@ -47,7 +47,7 @@ class CanComm:
     def __init__(self, lib_file='./ControlCAN.dll',
                        can_dev=[0,1]):
         self.loadLIB(lib_file)
-        init_comm_dev()
+        self.init_comm_dev()
         self.dev_conn = []
         for i in can_dev:
             self.init_dev_conn(i)
