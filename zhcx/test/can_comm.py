@@ -76,13 +76,13 @@ class CanComm:
         return
 
     def init_dev_conn(self, can_dev):
-        ret = canLIB.VCI_InitCAN(VCI_USBCAN2, 0, can_dev, byref(vci_initconfig))
+        ret = self.canLIB.VCI_InitCAN(VCI_USBCAN2, 0, can_dev, byref(vci_initconfig))
         if ret == STATUS_OK:
             print('connect VCI_InitCAN-{} success\r\n'.format(i))
         else:
             m = 'connect VCI_InitCAN-{} fail\r\n'.format(i)
             raise ConnectionError(m)
-        ret = canLIB.VCI_StartCAN(VCI_USBCAN2, 0, can_dev)
+        ret = self.canLIB.VCI_StartCAN(VCI_USBCAN2, 0, can_dev)
         if ret == STATUS_OK:
             print('connect VCI_StartCAN-{} success\r\n'.format(i))
         else:
@@ -94,7 +94,7 @@ class CanComm:
         data_array = data_array_cls(*data_sect)
         send_obj = VCI_CAN_OBJ(id_sect, 0, 0, 1, 0, 1,  8,
                                data_array, reserved_array())
-        ret = canLIB.VCI_Transmit(VCI_USBCAN2, 0, can_dev, byref(send_obj), 1)
+        ret = self.canLIB.VCI_Transmit(VCI_USBCAN2, 0, can_dev, byref(send_obj), 1)
         if ret == STATUS_OK:
             return True
         else:
@@ -104,10 +104,10 @@ class CanComm:
         data_array = data_array_cls(0, 0, 0, 0, 0, 0, 0, 0)
         recv_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0,
                                data_array, reserved_array())
-        ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
+        ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(vci_can_obj), 2500, 0)
         while ret <= 0:
-            ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
+            ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                      byref(vci_can_obj), 2500, 0)
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
