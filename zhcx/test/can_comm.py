@@ -45,7 +45,7 @@ def verifylibfile(fname):
 
 class CanComm:
     def __init__(self, lib_file='./ControlCAN.dll',
-                       can_dev = [0,1]):
+                       can_dev=[0,1]):
         self.loadLIB(lib_file)
         init_comm_dev()
         self.dev_conn = []
@@ -104,13 +104,19 @@ class CanComm:
         data_array = data_array_cls(0, 0, 0, 0, 0, 0, 0, 0)
         recv_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0,
                                data_array, reserved_array())
-        ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, 1,
+        ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(vci_can_obj), 2500, 0)
         while ret <= 0:
-            ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, 1,
+            ret = canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                      byref(vci_can_obj), 2500, 0)
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
 
     def __del__(self):
         canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
+
+
+if __name__ == "__main__":
+    c = CanComm('./ControlCAN.dll', [0,1])
+    c.send(0, 33, [1,3,5,7,9,2,4,6])
+    print(c.read(1))
