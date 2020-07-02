@@ -18,8 +18,8 @@ def f2ls(var):
 
 def assert_lst(lst, length):
     assert isinstance(lst, list)
-    assert len(dat) == length
-    for i in dat:
+    assert len(lst) == length
+    for i in lst:
         assert_var(i, int, 8)
     return
 
