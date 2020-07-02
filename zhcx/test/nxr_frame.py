@@ -37,10 +37,10 @@ def ext_id(pro=0x060, ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
 def data_sect(cmd=0x0, num=0x0043, dat=[0x00]*4):
     assert_var(cmd, int, 8)
     assert_var(num, int, 16)
-
     assert_lst(dat, 4)
-    
-    res = b12 + content
+    num0 = num // 0x100
+    num1 = num % 0x100
+    res = [cmd]+[num0]+[num1]+dat
     return res
 
 def test(can1):
