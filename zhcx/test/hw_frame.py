@@ -29,3 +29,15 @@ def form_data(fault=0x0, signal=0x0, content=[0x00]*6):
     b12 = [(byt_12 // 256), (byt_12 % 256)]
     res = b12 + content
     return res
+
+def test():
+    id_1 = hw_frame.form_id(ptc=0x0d, addr=0x00, cmd=0x50, src=0x1, cnt=0x0)
+    data_1 = hw_frame.form_data(fault=0x0, signal=0x0, content=[0x00]*6)
+
+    can1.send(0, id_1, data_1)
+    a, b = can1.read(0)
+    while a:
+        print("{:029b}".format(a), b)
+        if not a%2:
+            break
+        a, b = can1.read(0)
