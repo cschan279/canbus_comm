@@ -30,7 +30,7 @@ def form_data(fault=0x0, signal=0x0, content=[0x00]*6):
     res = b12 + content
     return res
 
-def test():
+def test(can1):
     id_1 = hw_frame.form_id(ptc=0x0d, addr=0x00, cmd=0x50, src=0x1, cnt=0x0)
     data_1 = hw_frame.form_data(fault=0x0, signal=0x0, content=[0x00]*6)
 
