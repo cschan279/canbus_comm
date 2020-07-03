@@ -34,14 +34,22 @@ def ext_id(pro=0x060, ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
             res << val_len[i]
     return res
 
-def data_sect(cmd=0x0, num=0x0043, dat=[0x00]*4):
-    assert_var(cmd, int, 8)
-    assert_var(num, int, 16)
+def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
+    assert_var(typ, int, 8)
+    assert_var(cmd, int, 16)
     assert_lst(dat, 4)
-    num0 = num // 0x100
-    num1 = num % 0x100
-    res = [cmd]+[num0]+[num1]+dat
+    cmd0 = cmd // 0x100
+    cmd1 = cmd % 0x100
+    res = [typ]+[cmd0]+[cmd1]+dat
     return res
+
+def req_addr(can_dev):
+    eid = ext_id()
+    dat = data_sect(typ=0x10, cmd=0x0043)
+    can_dev.send(1, eid, dat)
+    a, b = can_dev.read(1)
+    print("{:029b}".format(a), b)
+
 
 def test(can1):
     id_1 = hw_frame.form_id(ptc=0x0d, addr=0x00, cmd=0x50, src=0x1, cnt=0x0)
