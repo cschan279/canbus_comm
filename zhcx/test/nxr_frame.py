@@ -43,22 +43,17 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     res = [typ]+[cmd0]+[cmd1]+dat
     return res
 
+def send2get(can_dev, eid, dat):
+    pass
+
 def req_addr(can_dev):
     eid = ext_id()
     dat = data_sect(typ=0x10, cmd=0x0043)
     can_dev.send(1, eid, dat)
     a, b = can_dev.read(1)
     print("{:029b}".format(a), b)
+    return 
 
-
-def test(can1):
-    id_1 = hw_frame.form_id(ptc=0x0d, addr=0x00, cmd=0x50, src=0x1, cnt=0x0)
-    data_1 = hw_frame.form_data(fault=0x0, signal=0x0, content=[0x00]*6)
-
-    can1.send(0, id_1, data_1)
-    a, b = can1.read(0)
-    while a:
-        print("{:029b}".format(a), b)
-        if not a%2:
-            break
-        a, b = can1.read(0)
+def req_volt(can_dev, addr):
+    eid = ext_id(ptp=0x1, dst=0x01)
+    dat = data_sect(0x10, )
