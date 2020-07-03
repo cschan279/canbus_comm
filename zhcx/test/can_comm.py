@@ -3,6 +3,7 @@
 #
 from ctypes import *
 import os
+import time
 
 VCI_USBCAN2 = 4
 STATUS_OK = 1
@@ -112,6 +113,7 @@ class CanComm:
             ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                      byref(recv_obj), 2500, 0)
             count += 1
+            time.sleep(0.1)
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
         else: 
