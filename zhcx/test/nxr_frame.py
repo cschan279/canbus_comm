@@ -14,7 +14,9 @@ def ls2f(ls):
     return struct.unpack('f', bytearray(ls.reverse()))
 
 def f2ls(var):
-    return [int(i) for i in struct.pack('f',var)].reverse()
+    res = [int(i) for i in struct.pack('f',var)]
+    res.reverse()
+    return res
 
 def assert_lst(lst, length):
     assert isinstance(lst, list)
