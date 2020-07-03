@@ -44,15 +44,23 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     return res
 
 def send2get(can_dev, eid, dat):
-    pass
+    can_dev.send(1, eid, dat)
+    a, b = can_dev.read(1)
+    count = 0
+    while b[1] !=0xf0 and count < 5:
+         can_dev.send(1, eid, dat)
+         a, b = can_dev.read(1)
+         count += 1
+    if b[1] !=0xf0:
+        raise ConnectionError('Unable to get normal frame:', b[1])
+    return a, b
 
 def req_addr(can_dev):
     eid = ext_id()
     dat = data_sect(typ=0x10, cmd=0x0043)
-    can_dev.send(1, eid, dat)
-    a, b = can_dev.read(1)
+    a, b = send2get(can_dev, eid, dat)
     print("{:029b}".format(a), b)
-    return 
+    return
 
 def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=0x01)
