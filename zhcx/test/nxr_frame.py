@@ -50,7 +50,7 @@ def id_ext(id_num):
     rest, dst = divmod(rest, 2**8)
     rest, ptp = divmod(rest, 2**1)
     rest, pro = divmod(rest, 2**9)
-    return rest, pro, ptp, dst, src, grp
+    return pro, ptp, dst, src, grp
 
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
