@@ -65,7 +65,7 @@ def send2get(can_dev, eid, dat):
     can_dev.send(1, eid, dat)
     a, b = can_dev.read(1)
     count = 0
-    while b[1] !=0xf0 and count < 5:
+    while b[1] !=0xf0 and count < 20:
          can_dev.send(1, eid, dat)
          a, b = can_dev.read(1)
          count += 1
@@ -79,7 +79,7 @@ def send2get(can_dev, eid, dat):
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
 
 def printlsHex(ls):
-    ls_out = (hex(i) for i in ls)
+    ls_out = [hex(i) for i in ls]
     print(ls_out)
 
 def req_addr(can_dev):
@@ -91,9 +91,10 @@ def req_addr(can_dev):
     return
 
 def req_volt(can_dev, addr):
-    eid = ext_id(ptp=0x1, dst=addr)
+    eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
     dat = data_sect(0x10, 0x0001)
     a, b = send2get(can_dev, eid, dat)
     printlsHex(a)
     printlsHex(b)
+    print(b[-1])
     return

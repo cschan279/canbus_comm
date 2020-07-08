@@ -109,7 +109,7 @@ class CanComm:
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(recv_obj), 2500, 0)
         count = 0
-        while ret <= 0 and count < 10:
+        while ret <= 0 and count < 20:
             ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                      byref(recv_obj), 2500, 0)
             count += 1
