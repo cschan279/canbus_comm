@@ -11,7 +11,15 @@ def assert_var(var, typ, len_limit):
     return
 
 def ls2f(ls):
-    return struct.unpack('f', bytearray(ls.reverse()))
+    ls.reverse()
+    return struct.unpack('f', bytearray(ls))
+
+def ls2int(ls):
+    val = 0
+    for i in ls:
+        val *= 256
+        val += i
+    return val
 
 def f2ls(var):
     res = [int(i) for i in struct.pack('f',var)]
@@ -55,7 +63,11 @@ def send2get(can_dev, eid, dat):
          count += 1
     if b[1] !=0xf0:
         raise ConnectionError('Unable to get normal frame:', b[1])
-    return a, b
+    if b[0] == 0x41:
+        fn = ls2f(b[4:])
+    else:
+        fn = ls2int(b[4:])
+    return a, [b[0], b[1], ls2int(b[2:4]), fn]
 
 def req_addr(can_dev):
     eid = ext_id()
@@ -66,4 +78,7 @@ def req_addr(can_dev):
 
 def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=0x01)
-    dat = data_sect(0x10, )
+    dat = data_sect(0x10, 0x0001)
+    a, b = send2get(can_dev, eid, dat)
+    print("{:029b}".format(a), b)
+    return
