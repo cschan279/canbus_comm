@@ -44,6 +44,14 @@ def ext_id(pro=0x060, ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
             res << val_len[i]
     return res
 
+def id_ext(id_num):
+    rest, grp = divmod(id_num, 2**3)
+    rest, src = divmod(rest, 2**8)
+    rest, dst = divmod(rest, 2**8)
+    rest, ptp = divmod(rest, 2**1)
+    rest, pro = divmod(rest, 2**9)
+    return rest, pro, ptp, dst, src, grp
+
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
     assert_var(cmd, int, 16)
@@ -67,18 +75,25 @@ def send2get(can_dev, eid, dat):
         fn = ls2f(b[4:])
     else:
         fn = ls2int(b[4:])
-    return a, [b[0], b[1], ls2int(b[2:4]), fn]
+    id_ls = id_ext(a)
+    return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
+
+def printlsHex(ls):
+    ls_out = (hex(i) for i in ls)
+    print(ls_out)
 
 def req_addr(can_dev):
     eid = ext_id()
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
-    print("{:029b}".format(a), b)
+    printlsHex(a)
+    printlsHex(b)
     return
 
 def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=addr)
     dat = data_sect(0x10, 0x0001)
     a, b = send2get(can_dev, eid, dat)
-    print("{:029b}".format(a), b)
+    printlsHex(a)
+    printlsHex(b)
     return
