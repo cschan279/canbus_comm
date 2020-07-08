@@ -61,6 +61,9 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     return res
 
 def send2get(can_dev, eid, dat):
+    print('Sent:')
+    printlsHex(id_ext(eid))
+    printlsHex(dat)
     can_dev.send(1, eid, dat)
     a, b = can_dev.read(1)
     count = 0
@@ -75,6 +78,9 @@ def send2get(can_dev, eid, dat):
     else:
         fn = ls2int(b[4:])
     id_ls = id_ext(a)
+    print('Received:')
+    printlsHex(id_ls)
+    printlsHex(b)
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
 
 def printlsHex(ls):
@@ -85,6 +91,7 @@ def req_addr(can_dev):
     eid = ext_id()
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
+    print("Result:")
     printlsHex(a)
     printlsHex(b)
     return
@@ -93,6 +100,7 @@ def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
     dat = data_sect(0x10, 0x0001)
     a, b = send2get(can_dev, eid, dat)
+    print("Result:")
     printlsHex(a)
     printlsHex(b)
     print(b[-1])
