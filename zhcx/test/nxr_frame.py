@@ -56,8 +56,7 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
     assert_var(cmd, int, 16)
     assert_lst(dat, 4)
-    cmd0 = cmd // 0x100
-    cmd1 = cmd % 0x100
+    cmd0, cmd1 = divmod(cmd, 0x100)
     res = [typ]+[cmd0]+[cmd1]+dat
     return res
 
