@@ -41,15 +41,15 @@ def ext_id(pro=0x060, ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
         assert_var(var[i], int, val_len[i])
         res += var[i]
         if (i+1) < 5:
-            res << val_len[i]
+            res = res << val_len[i+1]
     return res
 
 def id_ext(id_num):
     rest, grp = divmod(id_num, 2**3)
     rest, src = divmod(rest, 2**8)
     rest, dst = divmod(rest, 2**8)
-    rest, ptp = divmod(rest, 2**1)
-    rest, pro = divmod(rest, 2**9)
+    pro, ptp = divmod(rest, 2**1)
+    #rest, pro = divmod(rest, 2**9)
     return pro, ptp, dst, src, grp
 
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
