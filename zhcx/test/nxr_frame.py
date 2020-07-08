@@ -77,7 +77,7 @@ def req_addr(can_dev):
     return
 
 def req_volt(can_dev, addr):
-    eid = ext_id(ptp=0x1, dst=0x01)
+    eid = ext_id(ptp=0x1, dst=addr)
     dat = data_sect(0x10, 0x0001)
     a, b = send2get(can_dev, eid, dat)
     print("{:029b}".format(a), b)
