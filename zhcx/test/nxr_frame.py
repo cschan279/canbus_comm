@@ -37,7 +37,7 @@ def ext_id(ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
     val_len = (1,8,8,3)
     var = (ptp, dst, src, grp)
     res = 0x060
-    for i in range(5):
+    for i in range(4):
         assert_var(var[i], int, val_len[i])
         res = res << val_len[i]
         res += var[i]
@@ -88,7 +88,7 @@ def printlsHex(ls):
     print(ls_out)
 
 def req_addr(can_dev):
-    eid = ext_id(ptp=0x1, grp=0x0)
+    eid = ext_id(ptp=0x1, dst=0x1, grp=0x0)
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
