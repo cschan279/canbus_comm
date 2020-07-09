@@ -103,6 +103,6 @@ def req_volt(can_dev, addr):
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
     printlsHex(a)
-    printlsHex(b)
+    #printlsHex(b)
     print(b[-1])
     return
