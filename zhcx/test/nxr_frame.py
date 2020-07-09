@@ -33,15 +33,14 @@ def assert_lst(lst, length):
         assert_var(i, int, 8)
     return
 
-def ext_id(pro=0x060, ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
-    val_len = (9,1,8,8,3)
-    var = (pro, ptp, dst, src, grp)
-    res = 0
+def ext_id(ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
+    val_len = (1,8,8,3)
+    var = (ptp, dst, src, grp)
+    res = 0x060
     for i in range(5):
         assert_var(var[i], int, val_len[i])
+        res = res << val_len[i]
         res += var[i]
-        if (i+1) < 5:
-            res = res << val_len[i+1]
     return res
 
 def id_ext(id_num):
@@ -85,11 +84,11 @@ def send2get(can_dev, eid, dat):
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
 
 def printlsHex(ls):
-    ls_out = [hex(i) for i in ls]
+    ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
     print(ls_out)
 
 def req_addr(can_dev):
-    eid = ext_id()
+    eid = ext_id(ptp=0x1, grp=0x0)
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
