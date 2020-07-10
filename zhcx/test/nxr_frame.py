@@ -59,20 +59,26 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     res = [typ]+[0x00]+[cmd0]+[cmd1]+dat
     return res
 
-def send2get(can_dev, eid, dat):
+def sendNread(can_dev, eid, dat):
     print('Sent:')
     printlsHex(id_ext(eid))
     printlsHex(dat)
     can_dev.send(1, eid, dat)
     a, b = can_dev.read(1)
     count = 0
-    #while b[1] !=0xf0 and count < 20:
     while not b and count < 20:
          can_dev.send(1, eid, dat)
          a, b = can_dev.read(1)
          count += 1
-    #if b[1] !=0xf0:
-        #raise ConnectionError('Unable to get normal frame:', b[1])
+    if not b:
+        raise ConnectionError('No response:', b[1])
+    return a, b
+
+def send2get(can_dev, eid, dat):
+    a, b = sendNread(can_dev, eid, dat)
+    if b[1] !=0xf0:
+        print(b)
+        raise ConnectionError('Invalid Response Frame:', b[1])
     if b[0] == 0x41:
         fn = ls2f(b[4:])
     else:
@@ -83,12 +89,16 @@ def send2get(can_dev, eid, dat):
     printlsHex(b)
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
 
+def send2config(can_dev, eid, dat):
+    a, b = sendNread(can_dev, eid, dat)
+
+
 def printlsHex(ls):
     ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
     print(ls_out)
 
 def req_addr(can_dev):
-    eid = ext_id(ptp=0x1, dst=0x1, grp=0x0)
+    eid = ext_id(ptp=0x1, dst=0xfe, grp=0x03)
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
@@ -98,10 +108,10 @@ def req_addr(can_dev):
 
 def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
-    dat = data_sect(0x10, 0x000C)
+    dat = data_sect(0x10, 0x0001)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
     printlsHex(a)
     #printlsHex(b)
-    print(b[-1])
-    return
+    #print(b[-1])
+    return b[-1]
