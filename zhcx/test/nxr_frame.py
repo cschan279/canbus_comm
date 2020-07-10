@@ -89,12 +89,6 @@ def send2get(can_dev, eid, dat):
     printlsHex(b)
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
 
-def send2config(can_dev, eid, dat):
-    a, b = sendNread(can_dev, eid, dat)
-    printlsHex(id_ext(a))
-    printlsHex(b)
-    return
-
 
 def printlsHex(ls):
     ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
@@ -111,10 +105,16 @@ def req_addr(can_dev):
 
 def req_volt(can_dev, addr):
     eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
-    dat = data_sect(0x10, 0x0001)
+    dat = data_sect(typ=0x10, cmd=0x0001)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
     printlsHex(a)
     #printlsHex(b)
     #print(b[-1])
     return b[-1]
+
+def set_volt(can_dev, addr, val=100):
+    eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
+    dat = data_sect(typ=0x03, cmd=0x0021, dat=f2ls(val))
+    can_dev.send(1, eid, dat)
+    return
