@@ -91,6 +91,9 @@ def send2get(can_dev, eid, dat):
 
 def send2config(can_dev, eid, dat):
     a, b = sendNread(can_dev, eid, dat)
+    printlsHex(id_ext(a))
+    printlsHex(b)
+    return
 
 
 def printlsHex(ls):
