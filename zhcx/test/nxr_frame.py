@@ -59,6 +59,23 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     res = [typ]+[0x00]+[cmd0]+[cmd1]+dat
     return res
 
+def sendonly(can_dev, eid, dat):
+    global lockflag
+    if lockflag:
+        raise ConnectionError('In use')
+    else:
+        lockflag = True
+    try:
+        print('Sent:')
+        printlsHex(id_ext(eid))
+        printlsHex(dat)
+        can_dev.send(1, eid, dat)
+        return True
+    finally:
+        lockflag = False
+        return False
+    return
+
 def sendNread(can_dev, eid, dat):
     global lockflag
     if lockflag:
@@ -84,6 +101,8 @@ def sendNread(can_dev, eid, dat):
 
 def send2get(can_dev, eid, dat):
     a, b = sendNread(can_dev, eid, dat)
+    if not b:
+        raise ConnectionError('no response')
     if b[1] !=0xf0:
         print(b)
         raise ConnectionError('Invalid Response Frame:', b[1])
@@ -96,6 +115,7 @@ def send2get(can_dev, eid, dat):
     printlsHex(id_ls)
     printlsHex(b)
     return id_ls, [b[0], b[1], ls2int(b[2:4]), fn]
+
 
 
 def printlsHex(ls):
