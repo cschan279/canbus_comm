@@ -2,6 +2,9 @@ import can_comm
 import hw_frame
 import nxr_frame
 
+
+
+
 can1 = can_comm.CanComm(lib_file='./ControlCAN.dll', can_dev=[0,1])
 
 #print('Req_Addr')
@@ -15,3 +18,15 @@ print('='*20)
 print('Set_Volt')
 nxr_frame.set_volt(can1, 0x01, 100)
 print('='*20)
+
+print('Turn On')
+nxr_frame.turn_onoff(can1, 0x01, True)
+print('='*20)
+
+Input('Status is now ON, Press Enter to turn OFF')
+
+print('Turn OFF')
+nxr_frame.turn_onoff(can1, 0x01, False)
+print('='*20)
+
+print('Status is now OFF')

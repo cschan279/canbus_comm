@@ -147,3 +147,10 @@ def set_volt(can_dev, addr, val=100):
     ret = sendonly(can_dev, eid, dat)
     print(req_volt(can_dev, addr))
     return
+
+def turn_onoff(can_dev, addr, onoff):
+    eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
+    odat = 0x00010000 if onoff else 0x00000000
+    dat = data_sect(typ=0x03, cmd=0x0030, dat=odat)
+    ret = sendonly(can_dev, eid, dat)
+    return
