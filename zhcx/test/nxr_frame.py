@@ -3,7 +3,7 @@
 import struct
 #[int(i) for i in struct.pack('f',1.2)].reverse()
 #struct.unpack('f', bytearray(x.reverse()))
-
+lockflag = False
 
 def assert_var(var, typ, len_limit):
     assert isinstance(var, typ)
@@ -60,16 +60,24 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     return res
 
 def sendNread(can_dev, eid, dat):
-    print('Sent:')
-    printlsHex(id_ext(eid))
-    printlsHex(dat)
-    can_dev.send(1, eid, dat)
-    a, b = can_dev.read(1)
-    count = 0
-    while not b and count < 20:
-         can_dev.send(1, eid, dat)
-         a, b = can_dev.read(1)
-         count += 1
+    global lockflag
+    if lockflag:
+        raise ConnectionError('In use')
+    else:
+        lockflag = True
+    try:
+        print('Sent:')
+        printlsHex(id_ext(eid))
+        printlsHex(dat)
+        can_dev.send(1, eid, dat)
+        a, b = can_dev.read(1)
+        count = 0
+        while not b and count < 20:
+             can_dev.send(1, eid, dat)
+             a, b = can_dev.read(1)
+             count += 1
+    finally:
+        lockflag = False
     if not b:
         raise ConnectionError('No response:', b[1])
     return a, b
