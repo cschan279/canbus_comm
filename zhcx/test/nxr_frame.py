@@ -144,5 +144,6 @@ def req_volt(can_dev, addr):
 def set_volt(can_dev, addr, val=100):
     eid = ext_id(ptp=0x1, dst=addr, grp=0x03)
     dat = data_sect(typ=0x03, cmd=0x0021, dat=f2ls(val))
-    can_dev.send(1, eid, dat)
+    ret = sendonly(can_dev, eid, dat)
+    print(req_volt(can_dev, addr))
     return
