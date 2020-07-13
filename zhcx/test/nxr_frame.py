@@ -123,7 +123,7 @@ def printlsHex(ls):
     print(ls_out)
 
 def req_addr(can_dev):
-    eid = ext_id(ptp=0x1, dst=0xfe, grp=0x03)
+    eid = ext_id(ptp=0x0, dst=0xff, grp=0x03)
     dat = data_sect(typ=0x10, cmd=0x0043)
     a, b = send2get(can_dev, eid, dat)
     print("Result:")
