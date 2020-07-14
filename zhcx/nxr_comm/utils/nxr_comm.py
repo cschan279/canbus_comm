@@ -6,8 +6,10 @@ import time
 
 
 def assert_var(var, typ, len_limit):
-    assert isinstance(var, typ)
-    assert var >= 0 and var < 2**len_limit
+    wn = "Wrong type: {}/{}".format(str(type(var)), str(typ))
+    assert isinstance(var, typ), wn
+    wn = "Out of range: 0<{}<{}".format(var, 2**len_limit)
+    assert var >= 0 and var < 2**len_limit, wn
     return
 
 def ls2f(ls):
@@ -141,7 +143,7 @@ class NXR_COMM:
         if flt:
             data = f2ls(val)
         else:
-            data = list(struct.pack('i', val))[::-1]
+            data = list(val.to_bytes(4, 'big'))
         eid = ext_id(ptp=0x1, dst=dst, grp=grp)
         dat = data_sect(typ=0x03, cmd=reg, dat=data)
         f = self.wait_flag(f)
