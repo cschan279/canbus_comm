@@ -3,6 +3,7 @@ from . import var
 
 import struct
 import time
+from threading import Thread
 
 
 def assert_var(var, typ, len_limit):
@@ -80,6 +81,9 @@ class NXR_COMM:
         self.running = True
         self.lockflag = 0
         self.flag_que = []
+        self.flagkeeper = Thread(self.flag_assign)
+        self.flagkeeper.start()
+        return
 
     def flag_assign(self):
         while self.running:
