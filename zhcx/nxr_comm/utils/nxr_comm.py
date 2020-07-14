@@ -92,7 +92,7 @@ class NXR_COMM:
         f = time.time()
         self.flag_que.append(f)
         count, cmax = 0, 20
-        while self.lockflag != flag:
+        while self.lockflag != f:
             time.sleep(0.3)
             count += 1
             if count >= cmax:
@@ -146,7 +146,7 @@ class NXR_COMM:
             data = list(val.to_bytes(4, 'big'))
         eid = ext_id(ptp=0x1, dst=dst, grp=grp)
         dat = data_sect(typ=0x03, cmd=reg, dat=data)
-        f = self.wait_flag(f)
+        f = self.wait_flag()
         try:
             self.send(eid, dat, read=False)
         finally:
