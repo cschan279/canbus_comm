@@ -6,8 +6,10 @@ import struct
 lockflag = False
 
 def assert_var(var, typ, len_limit):
-    assert isinstance(var, typ)
-    assert var >= 0 and var < 2**len_limit
+    wn = "Wrong type: {}/{}".format(str(type(var)), str(typ))
+    assert isinstance(var, typ), wn
+    wn = "Out of range: 0<{}<{}".format(var, 2**len_limit)
+    assert var >= 0 and var < 2**len_limit, wn
     return
 
 def ls2f(ls):

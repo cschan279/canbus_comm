@@ -44,9 +44,9 @@ def verifylibfile(fname):
     else:
         raise ValueError('Unexpected file extension')
 
-def printlsHex(ls):
+def printlsHex(ls, endc='\n'):
     ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
-    print(ls_out)
+    print(ls_out, end=endc)
     return
 
 class CanComm:
@@ -98,6 +98,9 @@ class CanComm:
         return
 
     def send(self, can_dev, id_sect, data_sect):
+        print('Send:', end=" ")
+        printlsHex(id_sect, endc="\t")
+        printlsHex(data_sect, endc="\n")
         data_array = data_array_cls(*data_sect)
         send_obj = VCI_CAN_OBJ(id_sect, 0, 0, 1, 0, 1,  8,
                                data_array, reserved_array())
