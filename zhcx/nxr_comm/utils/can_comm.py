@@ -44,6 +44,10 @@ def verifylibfile(fname):
     else:
         raise ValueError('Unexpected file extension')
 
+def printlsHex(ls):
+    ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
+    print(ls_out)
+    return
 
 class CanComm:
     def __init__(self, lib_file='./ControlCAN.dll',
