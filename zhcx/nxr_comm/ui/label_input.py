@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Spinbox, StringVar, OptionMenu
+from tkinter import Frame, Label, Spinbox, StringVar, OptionMenu, Entry
 
 
 class LabelSpin(Frame):
@@ -54,3 +54,27 @@ class LabelMenu(Frame):
 
     def get(self):
         return self.dic[self.var.get()]
+
+class LabelEntry(Frame):
+    def __init__(self, parent, width=400, height=50,
+                 text='Entry',
+                 font=('Times', 12), ratio=0.5):
+        Frame.__init__(self, parent, width=width, height=height)
+        self.pack_propagate(0)
+
+        self.f1 = Frame(self, width=int(width*ratio), height=height)
+        self.f1.pack_propagate(0)
+        self.f1.pack(side='left')
+
+        self.f2 = Frame(self, width=int(width*(1-ratio)), height=height)
+        self.f2.pack_propagate(0)
+        self.f2.pack(side='left')
+
+        self.lb = Label(self.f1, text=text, font=font)
+        self.lb.pack(fill='both',  expand=True)
+
+        self.et = Entry(self.f2, font=font)
+        self.et.pack(fill='both',  expand=True)
+
+    def get(self):
+        return self.et.get()
