@@ -3,7 +3,8 @@ from tkinter import Frame, Spinbox, Label
 
 class LabelSpin(Frame):
     def __init__(self, parent, width=400, height=50,
-                  text='spinbox', val_from=0, val_to=100):
+                 text='spinbox', val=(0,100),
+                 font=('Times', 12))):
         Frame.__init__(self, parent, width=width, height=height)
         self.pack_propagate(0)
 
@@ -18,7 +19,7 @@ class LabelSpin(Frame):
         self.lb = Label(self.f1, text=text)
         self.lb.pack(fill='both',  expand=True)
 
-        self.sp = Spinbox(self.f2, from_=val_from, to=val_to)
+        self.sp = Spinbox(self.f2, from_=val[0], to=val[1])
         self.sp.pack(fill='both',  expand=True)
 
     def get(self):
