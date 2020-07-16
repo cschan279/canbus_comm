@@ -88,6 +88,9 @@ def get_watt():
 def get_curr():
     return data_sect(typ=0x10, cmd=0x0002)
 
+def set_curr(val):
+    return data_sect(typ=0x10, cmd=0x0021, dat=i2ls(val*1024))
+
 def get_temp():
     return data_sect(typ=0x10, cmd=0x0004)
 
@@ -96,6 +99,3 @@ def set_onoff(onoff):
         return data_sect(typ=0x10, cmd=0x0030, dat=[0,0,0,0])
     else:
         return data_sect(typ=0x10, cmd=0x0030, dat=[0,1,0,0])
-
-def set_curr(val):
-    return data_sect(typ=0x10, cmd=0x0021, dat=i2ls(val*1024))
