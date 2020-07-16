@@ -50,8 +50,10 @@ class N_CTR:
 
     def _send(self, eid, dat, read=True):
         var.can_dev.send(self.ch, eid, dat)
+        time.sleep(0.3)
         if read:
             a, b = var.can_dev.read(self.ch)
+            time.sleep(0.3)
             count = 0
             while count < 16:
                 count += 1
@@ -65,4 +67,3 @@ class N_CTR:
                 return (a, b)
             else:
                 nxr_cmd.print_pack(a, b)
-                
