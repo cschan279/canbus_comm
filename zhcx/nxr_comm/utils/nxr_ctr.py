@@ -52,3 +52,17 @@ class N_CTR:
         var.can_dev.send(self.ch, eid, dat)
         if read:
             a, b = var.can_dev.read(self.ch)
+            count = 0
+            while count < 16:
+                count += 1
+                if not a or b:
+                    a, b = var.can_dev.read(self.ch)
+                    continue
+                if b[0] == 0x41 or b[0]== 0x42:
+                    break
+                time.sleep(0.3)
+            if b[0] == 0x41 or b[0]== 0x42:
+                return (a, b)
+            else:
+                nxr_cmd.print_pack(a, b)
+                

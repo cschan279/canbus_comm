@@ -37,6 +37,11 @@ def assert_lst(lst, length):
         assert_var(i, int, 8)
     return
 
+def printlsHex(ls, endc='\n'):
+    ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
+    print(ls_out, end=endc)
+    return
+
 def ext_id(ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
     val_len = (1,8,8,3)
     var = (ptp, dst, src, grp)
@@ -55,6 +60,10 @@ def id_ext(id_num):
     #rest, pro = divmod(rest, 2**9)
     return pro, ptp, dst, src, grp
 
+def print_id(val):
+    printlsHex(id_ext(val))
+    return
+
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
     assert_var(cmd, int, 16)
@@ -72,6 +81,11 @@ def dat_ext(ls):
     else:
         out_ls.append(ls[4:])
     return out_ls
+
+def print_pack(eid, dat):
+    printlsHex(id_ext(eid), endc=' ')
+    printlsHex(dat)
+    return
 
 def get_volt():
     return data_sect(typ=0x10, cmd=0x0001)
