@@ -76,10 +76,11 @@ def dat_ext(ls):
     return out_ls
 
 class NXR_COMM:
-    def __init__(self, channel=1):
+    def __init__(self, channel=1, dev_ls=[(1,3)]):
         self.ch = channel
         self.running = True
         self.lockflag = 0
+        self.dev_ls = dev_ls
         self.flag_que = []
         self.flagkeeper = Thread(self.flag_assign)
         self.flagkeeper.start()
@@ -156,3 +157,13 @@ class NXR_COMM:
         finally:
             self.release_flag(f)
         return
+
+    def get_volt(self, dst=0x01, grp=0x03):
+        return self.get_req(dst=dst, grp=grp, reg=0x0001)
+
+    def set_volt(self, dst=0x01, grp=0x03, val=250.):
+        self.config(dst=0x01, grp=0x03, flt=True, val=val)
+        return
+
+    def get_watt(self, dst=0x01, grp=0x03):
+        return self.get_req(dst=dst, grp=grp, reg=0x0048)
