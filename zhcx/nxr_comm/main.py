@@ -1,7 +1,7 @@
 from utils import can_comm
 from utils import nxr_comm
 from utils import var
-import sys
+import sys, time
 
 var.can_dev = can_comm.CanComm(lib_file='./utils/ControlCAN.dll',
                                can_dev=[0,1])
@@ -29,6 +29,8 @@ try:
     print(w)
 
     print("watt sect stop")
+except Exception as e:
+	print(e)
 finally:
     var.nxr_port.__del__()
     print('end')
