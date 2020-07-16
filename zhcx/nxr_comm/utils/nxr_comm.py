@@ -82,7 +82,7 @@ class NXR_COMM:
         self.lockflag = 0
         self.dev_ls = dev_ls
         self.flag_que = []
-        self.flagkeeper = Thread(self.flag_assign)
+        self.flagkeeper = Thread(target=self.flag_assign)
         self.flagkeeper.start()
         return
 
@@ -112,6 +112,7 @@ class NXR_COMM:
         var.can_dev.send(self.ch, eid, dat)
         if read:
             a, b = var.can_dev.read(self.ch)
+            print(b)
             return (a, b)
         else:
             return None
@@ -133,15 +134,16 @@ class NXR_COMM:
 
         a = id_ext(tup[0])
         b = dat_ext(tup[1])
-        if a[3] != dst:
-            print(a)
-            raise ConnectionError('Unexpected Frame Src:', a[3])
-        if b[1] != 0xf0:
-            print(b)
-            raise ConnectionError('Invalid Response Frame:', b[1])
-        if b[2] != reg:
-            print(b)
-            raise ConnectionError('Invalid Response Register:', b[1])
+        #if a[3] != dst:
+        #    print(a)
+        #    raise ConnectionError('Unexpected Frame Src:', a[3])
+        #if b[1] != 0xf0:
+        #    print(b)
+        #    raise ConnectionError('Invalid Response Frame:', b[1])
+        #if b[2] != reg:
+        #    print(b)
+        #    raise ConnectionError('Invalid Response Register:', b[1])
+		print(b)
         return b[3]
 
     def config(self, dst=0x01, grp=0x03, reg=0x0021, flt=True, val=250):
@@ -167,3 +169,6 @@ class NXR_COMM:
 
     def get_watt(self, dst=0x01, grp=0x03):
         return self.get_req(dst=dst, grp=grp, reg=0x0048)
+		
+    def __del__(self):
+        self.running = False
