@@ -9,22 +9,22 @@ var.can_dev = can_comm.CanComm(lib_file='./utils/ControlCAN.dll',
 var.nxr_port = nxr_comm.NXR_COMM(channel=1)
 
 
+try:
+    print("volt sect start")
+    var.nxr_port.set_volt(dst=0x01, grp=0x03, val=200)
 
-print("volt sect start")
-var.nxr_port.set_volt(dst=0x01, grp=0x03, val=200)
+    v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
+    print(v)
 
-v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
-print(v)
-
-print("volt sect end")
+    print("volt sect end")
 
 
-print("watt sect start")
-w = var.nxr_port.get_watt(dst=0x01, grp=0x03)
-print(w)
+    print("watt sect start")
+    w = var.nxr_port.get_watt(dst=0x01, grp=0x03)
+    print(w)
 
-print("watt sect stop")
-
-del var.nxr_port
-print('end')
-sys.exit() 
+    print("watt sect stop")
+finally:
+    var.nxr_port.__del__()
+    print('end')
+    sys.exit() 

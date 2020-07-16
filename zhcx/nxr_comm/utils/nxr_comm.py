@@ -165,7 +165,7 @@ class NXR_COMM:
         return self.get_req(dst=dst, grp=grp, reg=0x0001)
 
     def set_volt(self, dst=0x01, grp=0x03, val=250.):
-        self.config(dst=0x01, grp=0x03, flt=True, val=val)
+        self.config(dst=0x01, grp=0x03, reg=0x21, flt=True, val=val)
         return
 
     def get_watt(self, dst=0x01, grp=0x03):
