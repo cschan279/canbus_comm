@@ -120,7 +120,8 @@ class NXR_COMM:
                 count += 1
                 time.sleep(0.5)
             if not (b[0] == 0x41 or b[0] == 0x42):
-                print(a, b)
+                print(a, end="/t")
+                print(b, end="/n")
                 return None
             return (a, b)
         else:

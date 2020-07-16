@@ -15,7 +15,9 @@ try:
     print(v)
 
     var.nxr_port.set_volt(dst=0x01, grp=0x03, val=200)
-
+    
+    time.sleep(1)
+    
     v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
     print(v)
 
