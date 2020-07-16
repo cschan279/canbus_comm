@@ -11,6 +11,10 @@ var.nxr_port = nxr_comm.NXR_COMM(channel=1)
 
 try:
     print("volt sect start")
+    v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
+    print(v)
+    
+    
     var.nxr_port.set_volt(dst=0x01, grp=0x03, val=200)
 
     v = var.nxr_port.get_volt(dst=0x01, grp=0x03)

@@ -115,7 +115,10 @@ class NXR_COMM:
             a, b = var.can_dev.read(self.ch)
             count = 0
             while not (b[0] == 0x41 or b[0] == 0x42) and count < 20:
+                print("invalid", a, b)
                 a, b = var.can_dev.read(self.ch)
+                count += 1
+                time.sleep(0.5)
             if not (b[0] == 0x41 or b[0] == 0x42):
                 print(a, b)
                 return None
