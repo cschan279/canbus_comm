@@ -1,4 +1,3 @@
-from . import can_comm
 from . import var
 
 import struct
@@ -15,7 +14,7 @@ def assert_var(var, typ, len_limit):
 
 def ls2f(ls):
     ls.reverse()
-    return struct.unpack('f', bytearray(ls))
+    return struct.unpack('f', bytearray(ls))[0]
 
 def ls2int(ls):
     val = 0
