@@ -113,7 +113,12 @@ class NXR_COMM:
         var.can_dev.send(self.ch, eid, dat)
         if read:
             a, b = var.can_dev.read(self.ch)
-            print(b)
+            count = 0
+            while not (b[0] == 0x41 or b[0] == 0x42) and count < 20:
+                a, b = var.can_dev.read(self.ch)
+            if not (b[0] == 0x41 or b[0] == 0x42):
+                print(a, b)
+                return None
             return (a, b)
         else:
             return None
@@ -127,24 +132,24 @@ class NXR_COMM:
             tup = self.send(eid, dat, read=True)
             while not tup and count < 20:
                 time.sleep(0.3)
-                tup = self.send(eid, dat)
+                tup = self.send(eid, dat, read=True)
             if not tup:
-                raise ConnectionError('no response')
+                raise ConnectionError('no response/unknown response')
         finally:
             self.release_flag(f)
 
         a = id_ext(tup[0])
         b = dat_ext(tup[1])
-        #if a[3] != dst:
-        #    print(a)
-        #    raise ConnectionError('Unexpected Frame Src:', a[3])
-        #if b[1] != 0xf0:
-        #    print(b)
-        #    raise ConnectionError('Invalid Response Frame:', b[1])
-        #if b[2] != reg:
-        #    print(b)
-        #    raise ConnectionError('Invalid Response Register:', b[1])
-        print(b)
+        if a[3] != dst:
+           print(a)
+           raise ConnectionError('Unexpected Frame Src:', a[3])
+        if b[1] != 0xf0:
+           print(b)
+           raise ConnectionError('Invalid Response Frame:', b[1])
+        if b[2] != reg:
+           print(b)
+           raise ConnectionError('Invalid Response Register:', b[1])
+        print("Success:", b)
         return b[3]
 
     def config(self, dst=0x01, grp=0x03, reg=0x0021, flt=True, val=250):
@@ -170,7 +175,7 @@ class NXR_COMM:
 
     def get_watt(self, dst=0x01, grp=0x03):
         return self.get_req(dst=dst, grp=grp, reg=0x0048)
-		
+
     def __del__(self):
         self.running = False
         print("nxr running stop")
