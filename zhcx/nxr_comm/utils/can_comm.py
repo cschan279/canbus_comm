@@ -53,7 +53,7 @@ def id_ext(id_num):
     return pro, ptp, dst, src, grp
 
 def printlsHex(ls, endc='\n'):
-    print(ls)
+    #print(ls)
     ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
     print(ls_out, end=endc)
     return

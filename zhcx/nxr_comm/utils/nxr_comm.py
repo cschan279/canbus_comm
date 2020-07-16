@@ -91,6 +91,7 @@ class NXR_COMM:
             if not self.lockflag and self.flag_que:
                 self.lockflag = self.flag_que.pop(0)
             time.sleep(0.1)
+        print('flag assign end')
         return
 
     def wait_flag(self):
@@ -143,7 +144,7 @@ class NXR_COMM:
         #if b[2] != reg:
         #    print(b)
         #    raise ConnectionError('Invalid Response Register:', b[1])
-		print(b)
+        print(b)
         return b[3]
 
     def config(self, dst=0x01, grp=0x03, reg=0x0021, flt=True, val=250):
@@ -172,3 +173,4 @@ class NXR_COMM:
 		
     def __del__(self):
         self.running = False
+        print("nxr running stop")
