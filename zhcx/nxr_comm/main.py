@@ -13,8 +13,7 @@ try:
     print("volt sect start")
     v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
     print(v)
-    
-    
+
     var.nxr_port.set_volt(dst=0x01, grp=0x03, val=200)
 
     v = var.nxr_port.get_volt(dst=0x01, grp=0x03)
@@ -31,4 +30,4 @@ try:
 finally:
     var.nxr_port.__del__()
     print('end')
-    sys.exit() 
+    sys.exit()

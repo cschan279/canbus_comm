@@ -124,6 +124,7 @@ class NXR_COMM:
                 return None
             return (a, b)
         else:
+            time.sleep(1)
             return None
 
     def get_req(self, dst=0x01, grp=0x03, reg=0x0001):
