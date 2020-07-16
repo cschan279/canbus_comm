@@ -64,10 +64,7 @@ def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     return res
 
 def dat_ext(ls):
-    out_ls = []
-    out_ls.append(ls[0])
-    out_ls.append(ls[1])
-    out_ls.append(ls2int(ls[2:4]))
+    out_ls = [ls[0], ls[1], ls2int(ls[2:4])]
     if out_ls[0] == 0x41:
         out_ls.append(ls2f(ls[4:]))
     elif out_ls[0] == 0x42:
