@@ -31,8 +31,8 @@ def i2ls(var):
     return list(int(var).to_bytes(4, 'big'))
 
 def assert_lst(lst, length):
-    assert isinstance(lst, list)
-    assert len(lst) == length
+    assert isinstance(lst, list), 'invalid type {}'.format(type(lst))
+    assert len(lst) == length, 'invalid len {}'.format(len(lst))
     for i in lst:
         assert_var(i, int, 8)
     return
@@ -66,10 +66,15 @@ def print_id(val):
 
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
+    print('typ ok')
     assert_var(cmd, int, 16)
+    print('cmd ok')
     assert_lst(dat, 4)
+    print('dat ok')
     cmd0, cmd1 = divmod(cmd, 0x100)
+    print('cmd ready')
     res = [typ]+[0x00]+[cmd0]+[cmd1]+dat
+    print('data_sect ready')
     return res
 
 def dat_ext(ls):
