@@ -59,7 +59,7 @@ class N_CTR:
             count = 0
             while count < 16:
                 count += 1
-                if not a or b:
+                if not a and b:
                     a, b = var.can_dev.read(self.ch)
                     print('read repeat')
                     continue
@@ -114,7 +114,7 @@ class N_CTR:
         dat = nxr_cmd.get_curr()
         ret, raw, res = self._send(eid, dat, read=True)
         if ret:
-            if res[0] == 0x01:
+            if res[0] == 0x04:
                 return True, res[1]
             else:
                 return False, res[1]
