@@ -24,12 +24,6 @@ try:
     print("volt sect end\n", "#"*20)
 
 
-    print("watt sect start")
-    w = var.nxr_port.get_curr(addr_id=0)
-    print(w)
-
-    print("watt sect stop\n", "#"*20)
-
     print("curr sect start")
     w = var.nxr_port.get_curr(addr_id=0)
     print(w)
