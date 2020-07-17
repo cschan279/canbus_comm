@@ -65,10 +65,61 @@ class N_CTR:
                     break
                 time.sleep(0.3)
             if b[0] == 0x41:
-                c = b[4:]
+                c = nxr_cmd.ls2int(b[2:4])
+                d = nxr_cmd.ls2f(b[4:])
                 return True, (a, b), ()
             elif b[0]== 0x42:
+                c = nxr_cmd.ls2int(b[2:4])
+                d = nxr_cmd.ls2int(b[4:])
                 return True, (a, b), ()
             else:
+                print('Unk Return data type')
                 nxr_cmd.print_pack(a, b)
-                return False, None, None
+                return False, (a, b), None
+
+    def set_volt(self, addr_id=0, val=250):
+        addr = self.addrs[addr_id]
+        eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        dat = nxr_cmd.set_volt(val=val)
+        self._send(eid, dat, read=False)
+        return
+
+    def get_volt(self, addr_id=0):
+        addr = self.addrs[addr_id]
+        eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        dat = nxr_cmd.get_volt()
+        ret, raw, res = self._send(eid, dat, read=True)
+        if ret:
+            if res[0] = 0x01:
+                return True, res[1]
+            else:
+                return False, res[1]
+        else:
+            return False, raw
+
+    def set_curr(self, addr_id=0, val=10):
+        addr = self.addrs[addr_id]
+        eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        dat = nxr_cmd.set_curr(val=val)
+        self._send(eid, dat, read=False)
+        return
+
+    def get_curr(self, addr_id=0):
+        addr = self.addrs[addr_id]
+        eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        dat = nxr_cmd.get_curr()
+        ret, raw, res = self._send(eid, dat, read=True)
+        if ret:
+            if res[0] = 0x01:
+                return True, res[1]
+            else:
+                return False, res[1]
+        else:
+            return False, raw
+
+    def set_onoff(self, addr_id=0, onoff=False):
+        addr = self.addrs[addr_id]
+        eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        dat = nxr_cmd.set_onoff(onoff)
+        self._send(eid, dat, read=False)
+        return
