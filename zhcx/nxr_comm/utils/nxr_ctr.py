@@ -18,6 +18,7 @@ class Flag:
         while self.running:
             if not self.lockflag and self.flag_que:
                 self.lockflag = self.flag_que.pop(0)
+                print('.', end='')
             time.sleep(0.3)
         print('flag assign end')
         return
@@ -43,7 +44,7 @@ class Flag:
 
     def __del__(self):
         self.running = False
-        
+
 
 class N_CTR:
     def __init__(self, channel=1, addrs=[(1,3)]):
