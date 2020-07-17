@@ -8,6 +8,11 @@ var.can_dev = can_port.CanComm(lib_file='./utils/ControlCAN.dll',
 
 var.nxr_port = nxr_ctr.N_CTR(channel=1, addrs=[(1,3)])
 
+def countdown(t):
+    for i in range(t):
+        print(t-i, '...')
+        time.sleep(1)
+    return
 
 try:
     print("volt sect start")
@@ -23,7 +28,8 @@ try:
 
     print("volt sect end\n", "#"*20)
 
-    
+    countdown(10)
+
     print("volt sect start")
     v = var.nxr_port.get_volt(addr_id=0)
     print(v)
@@ -41,7 +47,7 @@ try:
     #print(c)
 
     #print("curr sect stop\n", "#"*20)
-    
+
     var.nxr_port.set_onoff(0, True)
 except Exception as e:
     print(e)
