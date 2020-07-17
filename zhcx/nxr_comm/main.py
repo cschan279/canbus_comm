@@ -23,14 +23,26 @@ try:
 
     print("volt sect end\n", "#"*20)
 
+    
+    print("volt sect start")
+    v = var.nxr_port.get_volt(addr_id=0)
+    print(v)
 
+    var.nxr_port.set_volt(addr_id=0, val=150)
+
+    time.sleep(1)
+
+    v = var.nxr_port.get_volt(addr_id=0)
+    print(v)
+
+    print("volt sect end\n", "#"*20)
     #print("curr sect start")
     #c = var.nxr_port.get_curr(addr_id=0)
     #print(c)
 
     #print("curr sect stop\n", "#"*20)
     
-    var.nxr_port.set_onoff(True)
+    var.nxr_port.set_onoff(0, True)
 except Exception as e:
     print(e)
     del var.nxr_port
