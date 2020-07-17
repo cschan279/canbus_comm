@@ -50,6 +50,7 @@ def ext_id(ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
         assert_var(var[i], int, val_len[i])
         res = res << val_len[i]
         res += var[i]
+        print('id', res)
     return res
 
 def id_ext(id_num):

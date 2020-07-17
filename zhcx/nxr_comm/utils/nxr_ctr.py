@@ -30,7 +30,8 @@ class Flag:
             time.sleep(self.inter)
             count += 1
             if count > self.cmax:
-                raise ConnectionError('Dev In use, Timeout')
+                print('wait flag timeout')
+                raise ConnectionError('Dev In use')
         return f
 
     def release_flag(self, flag, force=False):
@@ -95,6 +96,7 @@ class N_CTR:
     def get_volt(self, addr_id=0):
         addr = self.addrs[addr_id]
         eid = nxr_cmd.ext_id(ptp=1, dst=addr[0], grp=addr[1])
+        print(eid)
         dat = nxr_cmd.get_volt()
         ret, raw, res = self._send(eid, dat, read=True)
         if ret:
