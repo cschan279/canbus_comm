@@ -21,14 +21,20 @@ try:
     v = var.nxr_port.get_volt(addr_id=0)
     print(v)
 
-    print("volt sect end")
+    print("volt sect end\n", "#"*20)
 
 
     print("watt sect start")
     w = var.nxr_port.get_watt(addr_id=0)
     print(w)
 
-    print("watt sect stop")
+    print("watt sect stop\n", "#"*20)
+
+    print("curr sect start")
+    w = var.nxr_port.get_curr(addr_id=0)
+    print(w)
+
+    print("curr sect stop\n", "#"*20)
 except Exception as e:
 	print(e)
 finally:
