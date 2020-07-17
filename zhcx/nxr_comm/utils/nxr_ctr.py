@@ -61,18 +61,21 @@ class N_CTR:
                 count += 1
                 if not a or b:
                     a, b = var.can_dev.read(self.ch)
+                    print('read repeat')
                     continue
                 if b[0] == 0x41 or b[0]== 0x42:
                     break
                 time.sleep(0.3)
             if b[0] == 0x41:
+                print('float data')
                 c = nxr_cmd.ls2int(b[2:4])
                 d = nxr_cmd.ls2f(b[4:])
-                return True, (a, b), ()
+                return True, (a, b), (c, d)
             elif b[0]== 0x42:
+                print('int data')
                 c = nxr_cmd.ls2int(b[2:4])
                 d = nxr_cmd.ls2int(b[4:])
-                return True, (a, b), ()
+                return True, (a, b), (c, d)
             else:
                 print('Unk Return data type')
                 nxr_cmd.print_pack(a, b)
