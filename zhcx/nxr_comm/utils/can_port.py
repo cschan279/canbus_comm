@@ -134,7 +134,7 @@ class CanComm:
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
         else:
-            raise None, None
+            return None, None
 
     def __del__(self):
         self.canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)

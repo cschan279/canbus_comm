@@ -1,5 +1,6 @@
-import var
+from utils import var
 import time
+from threading import Thread
 from utils import nxr_cmd
 
 class Flag:
@@ -90,7 +91,7 @@ class N_CTR:
         dat = nxr_cmd.get_volt()
         ret, raw, res = self._send(eid, dat, read=True)
         if ret:
-            if res[0] = 0x01:
+            if res[0] == 0x01:
                 return True, res[1]
             else:
                 return False, res[1]
@@ -110,7 +111,7 @@ class N_CTR:
         dat = nxr_cmd.get_curr()
         ret, raw, res = self._send(eid, dat, read=True)
         if ret:
-            if res[0] = 0x01:
+            if res[0] == 0x01:
                 return True, res[1]
             else:
                 return False, res[1]

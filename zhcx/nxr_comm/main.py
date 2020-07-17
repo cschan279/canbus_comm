@@ -6,7 +6,7 @@ import sys, time
 var.can_dev = can_port.CanComm(lib_file='./utils/ControlCAN.dll',
                                can_dev=[0,1])
 
-var.nxr_port = nxr_comm.N_CTR(channel=1, addrs=[(1,3)])
+var.nxr_port = nxr_ctr.N_CTR(channel=1, addrs=[(1,3)])
 
 
 try:
@@ -25,7 +25,7 @@ try:
 
 
     print("watt sect start")
-    w = var.nxr_port.get_watt(addr_id=0)
+    w = var.nxr_port.get_curr(addr_id=0)
     print(w)
 
     print("watt sect stop\n", "#"*20)
@@ -38,6 +38,6 @@ try:
 except Exception as e:
 	print(e)
 finally:
-    var.nxr_port.__del__()
+    del var.nxr_port
     print('end')
     sys.exit()
