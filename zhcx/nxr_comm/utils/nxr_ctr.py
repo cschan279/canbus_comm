@@ -40,6 +40,10 @@ class Flag:
         else:
             return False
 
+    def __del__(self):
+        self.running = False
+
+        
 class N_CTR:
     def __init__(self, channel=1, addrs=[(1,3)]):
         self.ch = channel
