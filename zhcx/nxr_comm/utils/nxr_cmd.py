@@ -50,7 +50,7 @@ def ext_id(ptp=0x0, dst=0xff, src=0xf0, grp=0x0):
         assert_var(var[i], int, val_len[i])
         res = res << val_len[i]
         res += var[i]
-        print('id', res)
+        #print('id', res)
     return res
 
 def id_ext(id_num):
@@ -67,15 +67,15 @@ def print_id(val):
 
 def data_sect(typ=0x0, cmd=0x0043, dat=[0x00]*4):
     assert_var(typ, int, 8)
-    print('typ ok')
+    #print('typ ok')
     assert_var(cmd, int, 16)
-    print('cmd ok')
+    #print('cmd ok')
     assert_lst(dat, 4)
-    print('dat ok')
+    #print('dat ok')
     cmd0, cmd1 = divmod(cmd, 0x100)
-    print('cmd ready')
+    #print('cmd ready')
     res = [typ]+[0x00]+[cmd0]+[cmd1]+dat
-    print('data_sect ready')
+    #print('data_sect ready')
     return res
 
 def dat_ext(ls):

@@ -16,6 +16,7 @@ class Flag:
 
     def flag_assign(self):
         while self.running:
+            print('.')
             if not self.lockflag and self.flag_que:
                 self.lockflag = self.flag_que.pop(0)
                 print('.', end='')
@@ -134,3 +135,8 @@ class N_CTR:
         dat = nxr_cmd.set_onoff(onoff)
         self._send(eid, dat, read=False)
         return
+
+    def __del__(self):
+        self.lockflag.running = False
+        del self.lockflag
+        print('lockflag deleted')
