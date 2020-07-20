@@ -79,3 +79,10 @@ class LabelEntry(Frame):
 
     def get(self):
         return self.et.get()
+
+class LabelButton(Frame):
+    def __init__(self, parent, width=400, height=50,
+                 text='Entry', font=('Times', 12),
+                 command=None):
+        Frame.__init__(self, parent, width=width, height=height)
+        self.pack_propagate(0)
