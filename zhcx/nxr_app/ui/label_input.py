@@ -2,7 +2,7 @@ from tkinter import Frame, Label, Spinbox, StringVar, OptionMenu, Entry
 
 
 class LabelSpin(Frame):
-    def __init__(self, parent, width=400, height=50,
+    def __init__(self, parent, width=200, height=50,
                  text='spinbox', val=(0,100), inc=1,
                  font=('Times', 12), ratio=0.5):
         Frame.__init__(self, parent, width=width, height=height)
