@@ -20,9 +20,10 @@ class Target(Frame):
         pass
 
 class Volt(Frame):
-    def __init__(self, parent, id_mod):
+    def __init__(self, parent, id_mod, locker):
         Frame.__init__(self, parent)
         self.id_mod = id_mod
+        self.locker = locker
 
         self.entry = LabelSpin(self, text='Output Voltage', width=200,
                                val=(0,1000), inc=0.1)
@@ -51,9 +52,11 @@ class Volt(Frame):
         pass
 
 class OnOff(Frame):
-    def __init__(self, parent, id_mod):
+    def __init__(self, parent, id_mod, locker):
         Frame.__init__(self, parent)
         self.id_mod = id_mod
+        self.locker = locker
+
         self.onbtn = LabelButton(self, width=100, text='Turn On',
                                  command=self.turn_on)
         self.onbtn.pack(side='left')

@@ -2,25 +2,13 @@ import tkinter as tk
 from ui.module import *
 import time
 
-class App(tk.Tk):
-    def __init__(self, title="NXR", delay=500):
-        super().__init__()
-        self.title(title)
-        self.headtitle=title
+class Lock:
+    def __init__(self, interval=0.1, countmax=50):
         self.true = True
         self.lock0 = None
         self.lock1 = None
-        self.mod = {}
-
-        self.eid = Target(self)
-        self.eid.pack()
-
-        self.onoff = OnOff(self, self.eid)
-        self.onoff.pack()
-
-        self.volt = Volt(self, self.eid)
-        self.volt.pack()
-
+        self.countmax = countmax
+        self.interval = interval
         return
 
     def getlock(self):
@@ -50,4 +38,24 @@ class App(tk.Tk):
             self.lock1 = None
         else:
             print('mismatch lock1 to release', self.lock1, t)
+        return
+
+
+class App(tk.Tk):
+    def __init__(self, title="NXR", delay=500):
+        super().__init__()
+        self.title(title)
+        self.headtitle=title
+        self.lock = Lock()
+        self.mod = {}
+
+        self.eid = Target(self)
+        self.eid.pack()
+
+        self.onoff = OnOff(self, self.eid, self.lock)
+        self.onoff.pack()
+
+        self.volt = Volt(self, self.eid, self.lock)
+        self.volt.pack()
+
         return
