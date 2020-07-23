@@ -1,6 +1,9 @@
 import tkinter as tk
+import traceback
 from ui.label_input import *
 from ui.label_output import *
+import ui.var
+from utils import nxr_frame
 
 class Target(Frame):
     def __init__(self, parent):
@@ -17,13 +20,11 @@ class Target(Frame):
         addr = self.addr.get()
         grp = self.grp.get()
         print(addr, grp)
-        pass
+        return addr, grp
 
 class Volt(Frame):
-    def __init__(self, parent, id_mod, locker):
+    def __init__(self, parent):
         Frame.__init__(self, parent)
-        self.id_mod = id_mod
-        self.locker = locker
 
         self.entry = LabelSpin(self, text='Output Voltage', width=200,
                                val=(0,1000), inc=0.1)
@@ -42,20 +43,37 @@ class Volt(Frame):
         return
 
     def get_volt(self):
-        self.id_mod.get_id()
-        self.val_V.set('XV')
-        pass
+        ui.var.eid_mod.get_id()
+        val = '--V'
+
+        flag = ui.var.lock.getlock()
+        try:
+            volt = nxr_frame.req_volt(ui.var.can_dev, addr, grp)
+            val = volt + 'V'
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        ui.var.lock.unlock(flag)
+
+        self.val_V.set(val)
+        return
 
     def set_volt(self):
-        self.id_mod.get_id()
-        print(self.entry.get())
-        pass
+        addr, grp = ui.var.eid_mod.get_id()
+
+        val = float(self.entry.get())
+        flag = ui.var.lock.getlock()
+        try:
+            nxr_frame.set_volt(ui.var.can_dev, addr, val, grp)
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        ui.var.lock.unlock(flag)
+        return
 
 class OnOff(Frame):
     def __init__(self, parent, id_mod, locker):
         Frame.__init__(self, parent)
-        self.id_mod = id_mod
-        self.locker = locker
 
         self.onbtn = LabelButton(self, width=100, text='Turn On',
                                  command=self.turn_on)
@@ -65,11 +83,29 @@ class OnOff(Frame):
         self.offbtn.pack(side='left')
 
     def turn_on(self):
-        self.id_mod.get_id()
+        ui.var.eid_mod.get_id()
         print('turn on')
-        pass
+
+
+        flag = ui.var.lock.getlock()
+        try:
+            nxr_frame.turn_onoff(ui.var.can_dev, addr, True, grp)
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        ui.var.lock.unlock(flag)
+        return
 
     def turn_off(self):
-        self.id_mod.get_id()
+        ui.var.eid_mod.get_id()
         print('turn off')
-        pass
+
+
+        flag = ui.var.lock.getlock()
+        try:
+            nxr_frame.turn_onoff(ui.var.can_dev, addr, False, grp)
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        ui.var.lock.unlock(flag)
+        return

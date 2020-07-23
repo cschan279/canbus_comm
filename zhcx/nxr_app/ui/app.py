@@ -1,9 +1,10 @@
 import tkinter as tk
 from ui.module import *
 from ui.lock import Lock
+import ui.var
 
 from utils import can_comm
-
+from utils import nxr_frame
 import time
 
 
@@ -22,13 +23,13 @@ class App(tk.Tk):
         return
 
     def ui(self):
-        self.eid = Target(self)
-        self.eid.pack()
+        ui.var.eid_mod = Target(self)
+        ui.var.eid_mod.pack()
 
-        self.onoff = OnOff(self, self.eid, self.lock)
+        self.onoff = OnOff(self, self.eid)
         self.onoff.pack()
 
-        self.volt = Volt(self, self.eid, self.lock)
+        self.volt = Volt(self, self.eid)
         self.volt.pack()
         return
 
