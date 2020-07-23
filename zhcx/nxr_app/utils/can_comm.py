@@ -44,19 +44,6 @@ def verifylibfile(fname):
     else:
         raise ValueError('Unexpected file extension')
 
-def id_ext(id_num):
-    rest, grp = divmod(id_num, 2**3)
-    rest, src = divmod(rest, 2**8)
-    rest, dst = divmod(rest, 2**8)
-    pro, ptp = divmod(rest, 2**1)
-    #rest, pro = divmod(rest, 2**9)
-    return pro, ptp, dst, src, grp
-
-def printlsHex(ls, endc='\n'):
-    #print(ls)
-    ls_out = [hex(i) if isinstance(i, int) else i for i in ls]
-    print(ls_out, end=endc)
-    return
 
 class CanComm:
     def __init__(self, lib_file='./ControlCAN.dll',
@@ -107,9 +94,6 @@ class CanComm:
         return
 
     def send(self, can_dev, id_sect, data_sect):
-        print('Send:', end=" ")
-        printlsHex(id_ext(id_sect), endc="\t")
-        printlsHex(data_sect, endc="\n")
         data_array = data_array_cls(*data_sect)
         send_obj = VCI_CAN_OBJ(id_sect, 0, 0, 1, 0, 1,  8,
                                data_array, reserved_array())
@@ -134,11 +118,10 @@ class CanComm:
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
         else:
-            return None, None
+            raise ConnectionError('Wait for read times out', can_dev)
 
     def __del__(self):
         self.canLIB.VCI_CloseDevice(VCI_USBCAN2, 0)
-        print('can_dev closed')
 
 
 
