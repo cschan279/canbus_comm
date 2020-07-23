@@ -111,7 +111,7 @@ class CanComm:
         data_array = ubyte_array8(0, 0, 0, 0, 0, 0, 0, 0)
         ubyte_array3 = c_ubyte*3
         reserved_array = ubyte_array3(0, 0 , 0)
-        data_array = data_array_cls(0, 0, 0, 0, 0, 0, 0, 0)
+        #data_array = data_array_cls(0, 0, 0, 0, 0, 0, 0, 0)
         recv_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0,
                                data_array, reserved_array)
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
