@@ -17,8 +17,8 @@ class Target(Frame):
         return
 
     def get_id(self):
-        addr = self.addr.get()
-        grp = self.grp.get()
+        addr = int(self.addr.get())
+        grp = int(self.grp.get())
         print(addr, grp)
         return addr, grp
 
@@ -43,9 +43,9 @@ class Volt(Frame):
         return
 
     def get_volt(self):
-        ui.var.eid_mod.get_id()
+        addr, grp = ui.var.eid_mod.get_id()
         val = '--V'
-
+        print('ui.var.can_dev', ui.var.can_dev)
         flag = ui.var.lock.getlock()
         try:
             volt = nxr_frame.req_volt(ui.var.can_dev, addr, grp)
@@ -60,7 +60,7 @@ class Volt(Frame):
 
     def set_volt(self):
         addr, grp = ui.var.eid_mod.get_id()
-
+        print('ui.var.can_dev', ui.var.can_dev)
         val = float(self.entry.get())
         flag = ui.var.lock.getlock()
         try:
@@ -72,7 +72,7 @@ class Volt(Frame):
         return
 
 class OnOff(Frame):
-    def __init__(self, parent, id_mod, locker):
+    def __init__(self, parent):
         Frame.__init__(self, parent)
 
         self.onbtn = LabelButton(self, width=100, text='Turn On',
@@ -83,7 +83,7 @@ class OnOff(Frame):
         self.offbtn.pack(side='left')
 
     def turn_on(self):
-        ui.var.eid_mod.get_id()
+        addr, grp = ui.var.eid_mod.get_id()
         print('turn on')
 
 
@@ -97,7 +97,7 @@ class OnOff(Frame):
         return
 
     def turn_off(self):
-        ui.var.eid_mod.get_id()
+        addr, grp = ui.var.eid_mod.get_id()
         print('turn off')
 
 

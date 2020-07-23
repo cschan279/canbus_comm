@@ -13,7 +13,7 @@ class App(tk.Tk):
         super().__init__()
         self.title(title)
         self.headtitle=title
-        self.lock = Lock()
+        ui.var.lock = Lock()
 
         self.nxr()
 
@@ -26,14 +26,14 @@ class App(tk.Tk):
         ui.var.eid_mod = Target(self)
         ui.var.eid_mod.pack()
 
-        self.onoff = OnOff(self, self.eid)
+        self.onoff = OnOff(self)
         self.onoff.pack()
 
-        self.volt = Volt(self, self.eid)
+        self.volt = Volt(self)
         self.volt.pack()
         return
 
     def nxr(self):
-        self.can_dev = can_comm.CanComm(lib_file='./ControlCAN.dll',
+        ui.var.can_dev = can_comm.CanComm(lib_file='./utils/ControlCAN.dll',
                                         can_dev=[0,1])
         return
