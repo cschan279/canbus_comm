@@ -28,10 +28,10 @@ class VCI_CAN_OBJ(Structure):
                 ("Reserved", c_ubyte*3)
                 ]
 
-data_array_cls = c_ubyte*8
-reserved_array_cls = c_ubyte*3
-def reserved_array():
-    return reserved_array_cls(0, 0 , 0)
+# data_array_cls = c_ubyte*8
+# reserved_array_cls = c_ubyte*3
+# def reserved_array():
+#     return reserved_array_cls(0, 0 , 0)
 
 def verifylibfile(fname):
     f_ext = os.path.splitext(fname)[1]
@@ -94,9 +94,12 @@ class CanComm:
         return
 
     def send(self, can_dev, id_sect, data_sect):
-        data_array = data_array_cls(*data_sect)
+        ubyte_array8 = c_ubyte*8
+        data_array = ubyte_array8(*data_sect)
+        ubyte_array3 = c_ubyte*3
+        reserved_array = ubyte_array3(0, 0 , 0)
         send_obj = VCI_CAN_OBJ(id_sect, 0, 0, 1, 0, 1,  8,
-                               data_array, reserved_array())
+                               data_array, reserved_array)
         ret = self.canLIB.VCI_Transmit(VCI_USBCAN2, 0, can_dev, byref(send_obj), 1)
         if ret == STATUS_OK:
             return True
@@ -104,9 +107,13 @@ class CanComm:
             return False
 
     def read(self, can_dev):
+        ubyte_array8 = c_ubyte*8
+        data_array = ubyte_array8(0, 0, 0, 0, 0, 0, 0, 0)
+        ubyte_array3 = c_ubyte*3
+        reserved_array = ubyte_array3(0, 0 , 0)
         data_array = data_array_cls(0, 0, 0, 0, 0, 0, 0, 0)
         recv_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0,
-                               data_array, reserved_array())
+                               data_array, reserved_array)
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(recv_obj), 2500, 0)
         count = 0
