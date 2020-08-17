@@ -115,11 +115,11 @@ class CanComm:
         recv_obj = VCI_CAN_OBJ(0x0, 0, 0, 0, 0, 0,  0,
                                data_array, reserved_array)
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
-                                 byref(recv_obj), 2500, 0)
+                                 byref(recv_obj), 20, 0)
         count = 0
         while ret <= 0 and count < 20:
             ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
-                                     byref(recv_obj), 2500, 0)
+                                     byref(recv_obj), 20, 0)
             count += 1
             time.sleep(0.1)
         if ret > 0:
