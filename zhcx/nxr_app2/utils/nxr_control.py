@@ -75,7 +75,7 @@ class NXR_CONTROL:
     def new_rec(self, grp, src, rid, rdt, err):
         t = time.time()
         dt_pack = {"time":t, "rid":rid, "rdt":rdt, "err":err}
-        print(f"[{t}]: {rid} data from {grp}-{src} as {rdt}")
+        print(f"[{t}]: {rid:04x} data from {grp:x}-{src:x} as {rdt}")
         self.return_buf[grp][src] = dt_pack
         return
 
@@ -101,5 +101,5 @@ class NXR_CONTROL:
             if self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst]["time"] > t:
                     print('got reply')
-            return True, self.return_buf[grp][src]["rdt"]
+                return True, self.return_buf[grp][dst]["rdt"]
         return False, None
