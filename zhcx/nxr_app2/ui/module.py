@@ -50,7 +50,7 @@ class Volt(Frame):
         try:
             ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.volt_id)
             if ret:
-                val = volt + 'V'
+                val = f"{volt}V"
         except Exception as e:
             print(e)
             traceback.print_exc()

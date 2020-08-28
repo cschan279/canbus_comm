@@ -60,13 +60,13 @@ class NXR_CONTROL:
         try:
             fid, fdt = self.can_con.read(self.can_ch)
             if fid and fdt:
-                print("x"*10, "Read", "x"*10)
-                nxr_conv.print_bin_id(fid)
-                nxr_conv.print_hex_ls(fdt)
+                #print("x"*10, "Read", "x"*10)
+                #nxr_conv.print_bin_id(fid)
+                #nxr_conv.print_hex_ls(fdt)
                 pro, ptp, dst, src, grp = nxr_conv.decode_id(fid)
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
-                nxr_conv.print_hex_ls([grp, src, rid, rdt, err])
-                print("x"*10, "Read", "x"*10)
+                #nxr_conv.print_hex_ls([grp, src, rid, err])
+                #print("x"*10, "Read", "x"*10)
                 self.new_rec(grp, src, rid, rdt, err)
         except Exception as e:
             traceback.print_exc()
@@ -75,7 +75,7 @@ class NXR_CONTROL:
     def new_rec(self, grp, src, rid, rdt, err):
         t = time.time()
         dt_pack = {"time":t, "rid":rid, "rdt":rdt, "err":err}
-        print(f"[{t}]: {rid:04x} data from {grp:x}-{src:x} as {rdt}")
+        if not err: print(f"[{t}]: {rid:04x} data from {grp:x}-{src:x} as {rdt}")
         self.return_buf[grp][src] = dt_pack
         return
 
