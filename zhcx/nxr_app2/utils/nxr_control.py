@@ -29,7 +29,7 @@ class NXR_CONTROL:
         while self.loop_ret:
             self.send()
             self.read()
-            print('.', end='')
+            #print('.', end='')
         return
 
     def send(self):
@@ -92,5 +92,6 @@ class NXR_CONTROL:
             time.sleep(0.2)
             if self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst]["time"] > t:
-                    return True, self.return_buf[grp][src]["rdt"]
+                    print('got reply')
+            return True, self.return_buf[grp][src]["rdt"]
         return False, None

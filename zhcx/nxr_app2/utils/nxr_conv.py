@@ -20,9 +20,9 @@ def decode_id(fid):
     pro, ptp = divmod(rest, 2**1)
     return pro, ptp, dst, src, grp
 
-def print_hex_ls(*args):
-    print(args)
-    for i in args[0]: print(hex(i), end=" ")
+def print_hex_ls(ls):
+    #print(args)
+    for i in ls: print(hex(i), end=" ")
     print(' ')
     return
 
