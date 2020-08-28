@@ -35,5 +35,5 @@ class App(tk.Tk):
 
     def nxr(self):
         ui.var.can_dev = nxr_control.NXR_CONTROL(lib_file='./utils/ControlCAN.dll',
-                                        can_dev=[0])
+                                        can_dev=[1])
         return

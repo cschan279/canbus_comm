@@ -14,14 +14,15 @@ def encode_id(prono=0x060, ptp=True,dst=0x01,src=0xf0,grp=0x03):
     return fid
 
 def decode_id(fid):
-    rest, grp = divmod(id_num, 2**3)
+    rest, grp = divmod(fid, 2**3)
     rest, src = divmod(rest, 2**8)
     rest, dst = divmod(rest, 2**8)
     pro, ptp = divmod(rest, 2**1)
     return pro, ptp, dst, src, grp
 
 def print_hex_ls(*args):
-    for i in args: print(hex(i), end=" ")
+    print(args)
+    for i in args[0]: print(hex(i), end=" ")
     print(' ')
     return
 

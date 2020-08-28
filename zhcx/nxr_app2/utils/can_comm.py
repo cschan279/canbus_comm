@@ -116,9 +116,9 @@ class CanComm:
                                data_array, reserved_array)
         ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
                                  byref(recv_obj), 2500, 0)
-        while self.run_ret and not ret:
-            ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
-                                          byref(recv_obj), 2500, 0)
+        #while self.run_ret and not ret:
+        #    ret = self.canLIB.VCI_Receive(VCI_USBCAN2, 0, can_dev,
+        #                                  byref(recv_obj), 2500, 0)
         if ret > 0:
             return recv_obj.ID, list(recv_obj.Data)
         else:

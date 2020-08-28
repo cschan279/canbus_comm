@@ -8,7 +8,7 @@ onoff_id = 0x30
 
 class NXR_CONTROL:
     def __init__(self, lib_file='./ControlCAN.dll',
-                       can_dev=[0]):
+                       can_dev=[1]):
         self.can_con = can_comm.CanComm(lib_file=lib_file, can_dev=can_dev)
         self.can_ch = can_dev[0]
 
@@ -25,9 +25,11 @@ class NXR_CONTROL:
         return
 
     def loop(self):
+        print('loop thread for control')
         while self.loop_ret:
             self.send()
             self.read()
+            print('.', end='')
         return
 
     def send(self):
@@ -38,7 +40,7 @@ class NXR_CONTROL:
             fdt = self.sendlist[0]['fdt']
             print("x"*10, "Send", "x"*10)
             nxr_conv.print_bin_id(fid)
-            nxr.conv.print_hex_ls(fdt)
+            nxr_conv.print_hex_ls(fdt)
             print("x"*10, "Send", "x"*10)
             self.can_con.send(self.can_ch, fid, fdt)
             self.sendlist.pop(0)
@@ -52,10 +54,10 @@ class NXR_CONTROL:
             if fid and fdt:
                 print("x"*10, "Read", "x"*10)
                 nxr_conv.print_bin_id(fid)
-                nxr.conv.print_hex_ls(fdt)
+                nxr_conv.print_hex_ls(fdt)
                 pro, ptp, dst, src, grp = nxr_conv.decode_id(fid)
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
-                nxr.conv.print_hex_ls([grp, src, rid, rdt, err])
+                nxr_conv.print_hex_ls([grp, src, rid, rdt, err])
                 print("x"*10, "Read", "x"*10)
                 self.new_rec(grp, src, rid, rdt, err)
         except Exception as e:
