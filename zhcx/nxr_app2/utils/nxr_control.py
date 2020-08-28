@@ -15,12 +15,13 @@ class NXR_CONTROL:
         self.sendlist = []
         self.return_buf = [[{}]*256]*8
         self.loop_ret = True
+        self.lastsend = 0
         self.th = Thread(target=self.loop)
         self.th.start()
 
-        fid = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
-        fdt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
-        self.sendlist.append({"fid":fid, "fdt":fdt})
+        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
+        self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
+        self.sendlist.append({"fid":self.bc_id, "fdt":self.bc_dt})
 
         return
 
@@ -29,7 +30,13 @@ class NXR_CONTROL:
         while self.loop_ret:
             self.send()
             self.read()
+            self.keepsend()
             #print('.', end='')
+        return
+
+    def keepsend(self):
+        if time.time() - self.lastsend > 3:
+            self.sendlist.append({"fid":self.bc_id, "fdt":self.bc_dt})
         return
 
     def send(self):
@@ -43,6 +50,7 @@ class NXR_CONTROL:
             nxr_conv.print_hex_ls(fdt)
             print("x"*10, "Send", "x"*10)
             self.can_con.send(self.can_ch, fid, fdt)
+            self.lastsend = time.time()
             self.sendlist.pop(0)
         except Exception as e:
             traceback.print_exc()
