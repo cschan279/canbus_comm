@@ -3,7 +3,7 @@ import traceback
 from ui.label_input import *
 from ui.label_output import *
 import ui.var
-from utils import nxr_frame
+from utils import nxr_control
 
 class Target(Frame):
     def __init__(self, parent):
@@ -46,15 +46,14 @@ class Volt(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         val = '--V'
         print('ui.var.can_dev', ui.var.can_dev)
-        flag = ui.var.lock.getlock()
+        #flag = ui.var.lock.getlock()
         try:
-            volt = nxr_frame.req_volt(ui.var.can_dev, addr, grp)
-            val = volt + 'V'
+            ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.volt_id)
+            if ret:
+                val = volt + 'V'
         except Exception as e:
             print(e)
             traceback.print_exc()
-        ui.var.lock.unlock(flag)
-
         self.val_V.set(val)
         return
 
@@ -62,13 +61,12 @@ class Volt(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('ui.var.can_dev', ui.var.can_dev)
         val = float(self.entry.get())
-        flag = ui.var.lock.getlock()
         try:
-            nxr_frame.set_volt(ui.var.can_dev, addr, val, grp)
+            ret= ui.var.can_dev.req(addr, grp, nxr_control.volt_id, val)
+            return ret
         except Exception as e:
             print(e)
             traceback.print_exc()
-        ui.var.lock.unlock(flag)
         return
 
 class OnOff(Frame):
@@ -85,27 +83,19 @@ class OnOff(Frame):
     def turn_on(self):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn on')
-
-
-        flag = ui.var.lock.getlock()
         try:
-            nxr_frame.turn_onoff(ui.var.can_dev, addr, True, grp)
+            ret= ui.var.can_dev.req(addr, grp, nxr_control.onoff_id, 0)
         except Exception as e:
             print(e)
             traceback.print_exc()
-        ui.var.lock.unlock(flag)
         return
 
     def turn_off(self):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn off')
-
-
-        flag = ui.var.lock.getlock()
         try:
-            nxr_frame.turn_onoff(ui.var.can_dev, addr, False, grp)
+            ret= ui.var.can_dev.req(addr, grp, nxr_control.onoff_id, 0x10000)
         except Exception as e:
             print(e)
             traceback.print_exc()
-        ui.var.lock.unlock(flag)
         return

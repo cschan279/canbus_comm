@@ -3,8 +3,8 @@ from ui.module import *
 from ui.lock import Lock
 import ui.var
 
-from utils import can_comm
-from utils import nxr_frame
+#from utils import can_comm
+from utils import nxr_control
 import time
 
 
@@ -34,6 +34,6 @@ class App(tk.Tk):
         return
 
     def nxr(self):
-        ui.var.can_dev = can_comm.CanComm(lib_file='./utils/ControlCAN.dll',
-                                        can_dev=[0,1])
+        ui.var.can_dev = nxr_control.NXR_CONTROL(lib_file='./utils/ControlCAN.dll',
+                                        can_dev=[0])
         return
