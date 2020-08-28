@@ -57,22 +57,24 @@ class NXR_CONTROL:
 
     def set(self, dst, grp, rid, rdt, isfloat):
         t = time.time()
-        fid = nxr_conv.encode_id(ptp=True, dst=dst, src=0xf0, grp=grp)
+        fid = nxr_conv.encode_id(ptp=False, dst=dst, src=0xf0, grp=grp)
         fdt = nxr_conv.encode_data(func=0x03, rid=rid, rdt=rdt,
                                    isfloat=isfloat)
         self.sendlist.append({"fid":fid, "fdt":fdt})
-        for _ in range(10):
+        for _ in range(20):
             time.sleep(0.2)
-            if self.return_buf[grp][src]["time"] > t: return True
+            if self.return_buf[grp][dst]:
+                if self.return_buf[grp][dst]["time"] > t: return True
         return False
 
     def req(self, dst, grp, rid):
         t = time.time()
-        fid = nxr_conv.encode_id(ptp=True, dst=dst, src=0xf0, grp=grp)
+        fid = nxr_conv.encode_id(ptp=False, dst=dst, src=0xf0, grp=grp)
         fdt = nxr_conv.encode_data(func=0x10, rid=rid, rdt=0, isfloat=False)
         self.sendlist.append({"fid":fid, "fdt":fdt})
-        for _ in range(10):
+        for _ in range(20):
             time.sleep(0.2)
-            if self.return_buf[grp][src]["time"] > t:
-                return True, self.return_buf[grp][src]["rdt"]
+            if self.return_buf[grp][dst]:
+                if self.return_buf[grp][dst]["time"] > t:
+                    return True, self.return_buf[grp][src]["rdt"]
         return False, None

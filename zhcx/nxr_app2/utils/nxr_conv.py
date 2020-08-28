@@ -33,7 +33,7 @@ def print_bin_id(fid):
 
 def encode_data(func=0x03, errc=0x00, rid=0x00, rdt=0, isfloat=False):
     dat = [func, errc]
-    dat.extend(list(struct.pack(">H",cmd)))
+    dat.extend(list(struct.pack(">H",rid)))
     if isfloat:
         dat.extend(list(struct.pack('>f',rdt)))
     else:

@@ -1,6 +1,6 @@
 import tkinter as tk
 from ui.module import *
-from ui.lock import Lock
+#from ui.lock import Lock
 import ui.var
 
 #from utils import can_comm
@@ -13,7 +13,7 @@ class App(tk.Tk):
         super().__init__()
         self.title(title)
         self.headtitle=title
-        ui.var.lock = Lock()
+        #ui.var.lock = Lock()
 
         self.nxr()
 

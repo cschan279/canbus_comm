@@ -62,7 +62,7 @@ class Volt(Frame):
         print('ui.var.can_dev', ui.var.can_dev)
         val = float(self.entry.get())
         try:
-            ret= ui.var.can_dev.req(addr, grp, nxr_control.volt_id, val)
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.volt_id, val, True)
             return ret
         except Exception as e:
             print(e)
@@ -84,7 +84,7 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn on')
         try:
-            ret= ui.var.can_dev.req(addr, grp, nxr_control.onoff_id, 0)
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.onoff_id, 0, False)
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -94,7 +94,7 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn off')
         try:
-            ret= ui.var.can_dev.req(addr, grp, nxr_control.onoff_id, 0x10000)
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.onoff_id, 0x10000, False)
         except Exception as e:
             print(e)
             traceback.print_exc()
