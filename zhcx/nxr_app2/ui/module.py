@@ -154,12 +154,12 @@ class Stat(Frame):
 
         self.get_S = LabelButton(self, width=100, text='Get_Status',
                                  command=self.get_status)
-        self.get_A.pack(side='left')
+        self.get_S.pack(side='left')
 
         self.default = ' '.join(['----']*8)
 
-        self.val_A = LabelVar(self, text=self.default, width=400)
-        self.val_A.pack(side='left')
+        self.val_S = LabelVar(self, text=self.default, width=400)
+        self.val_S.pack(side='left')
         return
 
     def get_status(self):
@@ -175,5 +175,5 @@ class Stat(Frame):
         except Exception as e:
             print(e)
             traceback.print_exc()
-        self.val_A.set(val)
+        self.val_S.set(val)
         return
