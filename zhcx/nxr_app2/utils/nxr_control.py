@@ -2,9 +2,11 @@ from threading import Thread
 import traceback, time
 from utils import can_comm, nxr_conv
 
-volt_id = 0x21
-curr_id = 0x1b
-onoff_id = 0x30
+get_volt_id = 0x01
+set_volt_id = 0x21
+get_curr_id = 0x02
+set_curr_id = 0x1b
+set_onoff_id = 0x30
 
 class NXR_CONTROL:
     def __init__(self, lib_file='./ControlCAN.dll',
