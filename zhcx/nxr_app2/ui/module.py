@@ -50,7 +50,7 @@ class Volt(Frame):
         try:
             ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.get_volt_id)
             if ret:
-                val = f"{volt}V"
+                val = f"{int(volt*100)/100}V"
         except Exception as e:
             print(e)
             traceback.print_exc()

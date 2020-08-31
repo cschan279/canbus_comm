@@ -79,7 +79,9 @@ class NXR_CONTROL:
         return
 
     def new_rec(self, grp, src, rid, rdt, err):
-        if err: return
+        if err:
+            print(f'Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}')
+            return
         t = time.time()
         #dt_pack = {"time":t, "rdt":rdt, "err":err}
         if not err: print(f">>>>>>[{t}]: {rid:04x} data from {grp:x}-{src:02x} as {rdt}")
