@@ -106,6 +106,5 @@ class NXR_CONTROL:
             if rid in self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst][rid]["time"] > t:
                     print('got reply', self.return_buf[grp][dst][rid]["rdt"])
-
                 return True, self.return_buf[grp][dst][rid]["rdt"]
         return False, None
