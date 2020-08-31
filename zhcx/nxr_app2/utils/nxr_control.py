@@ -69,7 +69,7 @@ class NXR_CONTROL:
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
                 #nxr_conv.print_hex_ls([grp, src, rid, err])
                 #print("x"*10, "Read", "x"*10)
-                if rid in [0x21, 0x1b, 0x43]:
+                if rid in [0x40, 0x43]:
                     print("*"*30)
                     nxr_conv.print_hex_ls(fdt)
                     print("*"*30)
@@ -83,13 +83,13 @@ class NXR_CONTROL:
             print(f'Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}')
             return
         t = time.time()
-        #dt_pack = {"time":t, "rdt":rdt, "err":err}
-        if not err: print(f">>>>>>[{t}]: {rid:04x} data from {grp:x}-{src:02x} as {rdt}")
-        self.return_buf[grp][src][rid] = {}
-        self.return_buf[grp][src][rid]['rdt'] = rdt
-        self.return_buf[grp][src][rid]['err'] = err
-        self.return_buf[grp][src][rid]['time'] = t
-        if not rid > 100: print(f"///{grp}-{src}:", self.return_buf[grp][src])
+        dt_pack = {"time":t, "rdt":rdt, "err":err}
+        #if not err: print(f">>>>>>[{t}]: {rid:04x} data from {grp:x}-{src:02x} as {rdt}")
+        self.return_buf[grp][src][rid] = dt_pack
+        #self.return_buf[grp][src][rid]['rdt'] = rdt
+        #self.return_buf[grp][src][rid]['err'] = err
+        #self.return_buf[grp][src][rid]['time'] = t
+        #if not rid > 100: print(f"///{grp}-{src}:", self.return_buf[grp][src])
         return
 
     def set(self, dst, grp, rid, rdt, isfloat):
