@@ -96,7 +96,7 @@ class NXR_CONTROL:
         fid = nxr_conv.encode_id(ptp=True, dst=dst, src=0xf0, grp=grp)
         fdt = nxr_conv.encode_data(func=0x10, rid=rid, rdt=0, isfloat=False)
         self.sendlist.append({"fid":fid, "fdt":fdt})
-        for _ in range(20):
+        for _ in range(10):
             time.sleep(0.2)
             if rid in self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst][rid]["time"] > t:
