@@ -73,10 +73,15 @@ class NXR_CONTROL:
         return
 
     def new_rec(self, grp, src, rid, rdt, err):
+        if err: return
         t = time.time()
-        dt_pack = {"time":t, "rdt":rdt, "err":err}
+        #dt_pack = {"time":t, "rdt":rdt, "err":err}
         if not err: print(f">>>>>>[{t}]: {rid:04x} data from {grp:x}-{src:02x} as {rdt}")
-        self.return_buf[grp][src][rid] = dt_pack
+        self.return_buf[grp][src][rid] = {}
+        self.return_buf[grp][src][rid]['rdt'] = rdt
+        self.return_buf[grp][src][rid]['err'] = err
+        self.return_buf[grp][src][rid]['time'] = t
+        if not rid > 100: print(f"///{grp}-{src}:", self.return_buf[grp][src])
         return
 
     def set(self, dst, grp, rid, rdt, isfloat):
@@ -88,7 +93,7 @@ class NXR_CONTROL:
         for _ in range(20):
             time.sleep(0.2)
             if rid in self.return_buf[grp][dst]:
-                if self.return_buf[grp][dst]["time"] > t: return True
+                if self.return_buf[grp][dst][rid]["time"] > t: return True
         return False
 
     def req(self, dst, grp, rid):
@@ -100,6 +105,7 @@ class NXR_CONTROL:
             time.sleep(0.2)
             if rid in self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst][rid]["time"] > t:
-                    print('got reply')
+                    print('got reply', self.return_buf[grp][dst][rid]["rdt"])
+
                 return True, self.return_buf[grp][dst][rid]["rdt"]
         return False, None
