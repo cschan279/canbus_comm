@@ -85,7 +85,7 @@ class Curr(Frame):
                                  command=self.get_curr)
         self.get_A.pack(side='left')
 
-        self.val_A = LabelVar(self, text='0V', width=100)
+        self.val_A = LabelVar(self, text='0A', width=100)
         self.val_A.pack(side='left')
         return
 
@@ -97,7 +97,7 @@ class Curr(Frame):
         try:
             ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.get_curr_id)
             if ret:
-                val = f"{int(volt*100)/100}V"
+                val = f"{int(volt*100)/100}A"
         except Exception as e:
             print(e)
             traceback.print_exc()

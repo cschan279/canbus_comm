@@ -32,6 +32,9 @@ class App(tk.Tk):
 
         self.volt = Volt(self)
         self.volt.pack()
+
+        self.curr = Curr(self)
+        self.curr.pack()
         return
 
     def nxr(self):
