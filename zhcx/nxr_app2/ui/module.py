@@ -171,7 +171,7 @@ class Stat(Frame):
             if ret:
                 sl = list(f"{stat:032b}")
                 for i in range(32,0,-4): sl.insert(i, " ")
-                val = ''.join(sl)
+                val = ''.join(sl[::-1])
         except Exception as e:
             print(e)
             traceback.print_exc()
