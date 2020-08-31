@@ -26,7 +26,7 @@ class Volt(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
 
-        self.entry = LabelSpin(self, text='Output Voltage', width=200,
+        self.entry = LabelSpin(self, text='Target Voltage', width=200,
                                val=(0,1000), inc=0.1)
         self.entry.pack(side='left')
 
@@ -69,6 +69,54 @@ class Volt(Frame):
             traceback.print_exc()
         return
 
+class Curr(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
+
+        self.entry = LabelSpin(self, text='Target Current', width=200,
+                               val=(0,1000), inc=0.1)
+        self.entry.pack(side='left')
+
+        self.set_A = LabelButton(self, width=100, text='Set_A',
+                                 command=self.set_curr)
+        self.set_A.pack(side='left')
+
+        self.get_A = LabelButton(self, width=100, text='Get_A',
+                                 command=self.get_curr)
+        self.get_A.pack(side='left')
+
+        self.val_A = LabelVar(self, text='0V', width=100)
+        self.val_A.pack(side='left')
+        return
+
+    def get_curr(self):
+        addr, grp = ui.var.eid_mod.get_id()
+        val = '--A'
+        print('ui.var.can_dev', ui.var.can_dev)
+        #flag = ui.var.lock.getlock()
+        try:
+            ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.get_curr_id)
+            if ret:
+                val = f"{int(volt*100)/100}V"
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        self.val_A.set(val)
+        return
+
+    def set_curr(self):
+        addr, grp = ui.var.eid_mod.get_id()
+        print('ui.var.can_dev', ui.var.can_dev)
+        val = int(float(self.entry.get())*10)
+        try:
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_curr_id,
+                                    val, False)
+            return ret
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        return
+
 class OnOff(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
@@ -84,7 +132,8 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn on')
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id, 0, False)
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
+                                    0x000000, False)
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -94,7 +143,8 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn off')
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id, 0x10000, False)
+            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
+                                    0x010000, False)
         except Exception as e:
             print(e)
             traceback.print_exc()
