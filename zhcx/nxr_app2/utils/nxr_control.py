@@ -20,7 +20,7 @@ class NXR_CONTROL:
         self.th.start()
 
         self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
-        self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x1b, rdt=0, isfloat=False)
+        self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
         self.sendlist.append({"fid":self.bc_id, "fdt":self.bc_dt})
 
         return
@@ -67,6 +67,7 @@ class NXR_CONTROL:
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
                 #nxr_conv.print_hex_ls([grp, src, rid, err])
                 #print("x"*10, "Read", "x"*10)
+                if rid in [0x21, 0x1b, 0x43]: print_hex_ls(fdt)
                 self.new_rec(grp, src, rid, rdt, err)
         except Exception as e:
             traceback.print_exc()
