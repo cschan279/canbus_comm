@@ -21,7 +21,7 @@ class NXR_CONTROL:
         self.th = Thread(target=self.loop)
         self.th.start()
 
-        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
+        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xfe, src=0xf0, grp=0x3)
         self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
         self.sendlist.append({"fid":self.bc_id, "fdt":self.bc_dt})
 
