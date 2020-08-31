@@ -46,10 +46,11 @@ def decode_data(data_ls):
     func = data_ls[0]
     isfloat = (func == 0x41)
     errc = ((data_ls[1] != 0xF0) * 1) + ((func != 0x41 and func != 0x42) * 2)
-    print("<<<<<<",errc)
+    print("<<<<<<",errc, hex(data_ls[1]), hex(func))
     rid = struct.unpack(">H", bytearray(data_ls[2:4]))[0]
     if isfloat:
         rdt = struct.unpack(">f", bytearray(data_ls[4:]))[0]
     else:
         rdt = struct.unpack(">I", bytearray(data_ls[4:]))[0]
+    print_hex_ls(data_ls)
     return errc, rid, isfloat, rdt
