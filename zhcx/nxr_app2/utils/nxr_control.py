@@ -67,7 +67,10 @@ class NXR_CONTROL:
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
                 #nxr_conv.print_hex_ls([grp, src, rid, err])
                 #print("x"*10, "Read", "x"*10)
-                if rid in [0x21, 0x1b, 0x43]: print_hex_ls(fdt)
+                if rid in [0x21, 0x1b, 0x43]:
+                    print("*"*30)
+                    nxr_conv.print_hex_ls(fdt)
+                    print("*"*30)
                 self.new_rec(grp, src, rid, rdt, err)
         except Exception as e:
             traceback.print_exc()

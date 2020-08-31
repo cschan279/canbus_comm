@@ -3,4 +3,4 @@ from ui import app
 win = app.App()
 
 win.mainloop()
-x = input('ccc')
+x = input('Enter to Quit')
