@@ -19,7 +19,8 @@ class App(tk.Tk):
 
         self.ui()
 
-
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.bind('<Escape>', self.on_close)
         return
 
     def ui(self):
@@ -36,4 +37,9 @@ class App(tk.Tk):
     def nxr(self):
         ui.var.can_dev = nxr_control.NXR_CONTROL(lib_file='./utils/ControlCAN.dll',
                                         can_dev=[1])
+        return
+
+    def on_close(self):
+        ui.var.can_dev.loop_ret = False
+        self.destroy()
         return

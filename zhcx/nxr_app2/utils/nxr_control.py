@@ -20,7 +20,7 @@ class NXR_CONTROL:
         self.th.start()
 
         self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
-        self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
+        self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x1b, rdt=0, isfloat=False)
         self.sendlist.append({"fid":self.bc_id, "fdt":self.bc_dt})
 
         return
@@ -90,7 +90,7 @@ class NXR_CONTROL:
         fdt = nxr_conv.encode_data(func=0x03, rid=rid, rdt=rdt,
                                    isfloat=isfloat)
         self.sendlist.append({"fid":fid, "fdt":fdt})
-        for _ in range(20):
+        for _ in range(10):
             time.sleep(0.2)
             if rid in self.return_buf[grp][dst]:
                 if self.return_buf[grp][dst][rid]["time"] > t: return True
