@@ -45,8 +45,7 @@ class Volt(Frame):
     def get_volt(self):
         addr, grp = ui.var.eid_mod.get_id()
         val = '--V'
-        print('ui.var.can_dev', ui.var.can_dev)
-        #flag = ui.var.lock.getlock()
+        #print('ui.var.can_dev', ui.var.can_dev)
         try:
             ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.get_volt_id)
             if ret:
@@ -92,12 +91,11 @@ class Curr(Frame):
     def get_curr(self):
         addr, grp = ui.var.eid_mod.get_id()
         val = '--A'
-        print('ui.var.can_dev', ui.var.can_dev)
-        #flag = ui.var.lock.getlock()
+        #print('ui.var.can_dev', ui.var.can_dev)
         try:
-            ret, volt = ui.var.can_dev.req(addr, grp, nxr_control.get_curr_id)
+            ret, curr = ui.var.can_dev.req(addr, grp, nxr_control.get_curr_id)
             if ret:
-                val = f"{int(volt*100)/100}A"
+                val = f"{int(curr*100)/100}A"
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -148,4 +146,34 @@ class OnOff(Frame):
         except Exception as e:
             print(e)
             traceback.print_exc()
+        return
+
+class Stat(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
+
+        self.get_S = LabelButton(self, width=100, text='Get_Status',
+                                 command=self.get_status)
+        self.get_A.pack(side='left')
+
+        self.default = ' '.join(['----']*8)
+
+        self.val_A = LabelVar(self, text=self.default, width=400)
+        self.val_A.pack(side='left')
+        return
+
+    def get_status(self):
+        addr, grp = ui.var.eid_mod.get_id()
+        val = self.default
+        #print('ui.var.can_dev', ui.var.can_dev)
+        try:
+            ret, stat = ui.var.can_dev.req(addr, grp, nxr_control.get_status_id)
+            if ret:
+                sl = list(f"{stat:032b}")
+                for i in range(32,0,-4): sl.insert(i, " ")
+                val = ''.join(sl)
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        self.val_A.set(val)
         return

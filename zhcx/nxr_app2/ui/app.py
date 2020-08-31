@@ -35,6 +35,9 @@ class App(tk.Tk):
 
         self.curr = Curr(self)
         self.curr.pack()
+
+        self.stat = Stat(self)
+        self.stat.pack()
         return
 
     def nxr(self):

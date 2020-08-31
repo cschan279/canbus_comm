@@ -7,6 +7,7 @@ set_volt_id = 0x21
 get_curr_id = 0x02
 set_curr_id = 0x1b
 set_onoff_id = 0x30
+get_status_id = 0x40
 
 class NXR_CONTROL:
     def __init__(self, lib_file='./ControlCAN.dll',
