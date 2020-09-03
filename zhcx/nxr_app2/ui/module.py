@@ -61,7 +61,7 @@ class Volt(Frame):
         print('ui.var.can_dev', ui.var.can_dev)
         val = float(self.entry.get())
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_volt_id, val, True)
+            ret, val = ui.var.can_dev.set(addr, grp, nxr_control.set_volt_id, val, True)
             return ret
         except Exception as e:
             print(e)
@@ -107,7 +107,7 @@ class Curr(Frame):
         print('ui.var.can_dev', ui.var.can_dev)
         val = int(float(self.entry.get())*10)
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_curr_id,
+            ret, val = ui.var.can_dev.set(addr, grp, nxr_control.set_curr_id,
                                     val, False)
             return ret
         except Exception as e:
@@ -130,8 +130,9 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn on')
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
+            ret, val = ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
                                     0x000000, False)
+            print("Turn ON:", ret, val)
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -141,8 +142,9 @@ class OnOff(Frame):
         addr, grp = ui.var.eid_mod.get_id()
         print('turn off')
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
+            ret, val = ui.var.can_dev.set(addr, grp, nxr_control.set_onoff_id,
                                     0x010000, False)
+            print("Turn OFF:", ret, val)
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -183,45 +185,51 @@ class Custom(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
 
-        self.entry = LabelSpin(self, text='Target ID', width=200,
-                               val=(0,1000), inc=0.1)
-        self.entry.pack(side='left')
+        self.id_entry = LabelSpin(self, text='Target ID', width=200,
+                               val=(0,100), inc=1)
+        self.id_entry.pack(side='left')
 
-        self.set_A = LabelButton(self, width=100, text='Set_A',
-                                 command=self.set_curr)
-        self.set_A.pack(side='left')
+        self.dat_entry = CheckSpin(self, width=200, val=(0,100000), inc=0.1)
+        self.dat_entry.pack(side='left')
 
-        self.get_A = LabelButton(self, width=100, text='Get_A',
-                                 command=self.get_curr)
-        self.get_A.pack(side='left')
+        self.set = LabelButton(self, width=100, text='Set_Val',
+                                 command=self.set_val)
+        self.set.pack(side='left')
 
-        self.val_A = LabelVar(self, text='0A', width=100)
-        self.val_A.pack(side='left')
+        self.get = LabelButton(self, width=100, text='Get_Val',
+                                 command=self.get_val)
+        self.get.pack(side='left')
+
+        self.num_val = LabelVar(self, text='0A', width=100)
+        self.num_val.pack(side='left')
         return
 
-    def get_curr(self):
+    def get_val(self):
         addr, grp = ui.var.eid_mod.get_id()
-        val = '--A'
+        val = '--(unit)'
         #print('ui.var.can_dev', ui.var.can_dev)
         try:
-            ret, curr = ui.var.can_dev.req(addr, grp, nxr_control.get_curr_id)
+            ret, val = ui.var.can_dev.req(addr, grp, int(self.id_entry.get()))
             if ret:
-                val = f"{int(curr*100)/100}A"
+                val = f"{int(val*100)/100}(unit)"
         except Exception as e:
             print(e)
             traceback.print_exc()
-        self.val_A.set(val)
+        self.num_val.set(val)
         return
 
-    def set_curr(self):
+    def set_val(self):
         addr, grp = ui.var.eid_mod.get_id()
         print('ui.var.can_dev', ui.var.can_dev)
-        val = int(float(self.entry.get())*10)
+        isfloat, val = self.dat_entry.get()
         try:
-            ret= ui.var.can_dev.set(addr, grp, nxr_control.set_curr_id,
-                                    val, False)
+            ret, val  = ui.var.can_dev.set(addr, grp, int(self.id_entry.get()), val, isfloat)
+            if ret:
+                val = f"{int(val*100)/100}(unit)"
             return ret
         except Exception as e:
             print(e)
             traceback.print_exc()
+            val = '--(unit)'
+        self.num_val.set(val)
         return

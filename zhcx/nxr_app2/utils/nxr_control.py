@@ -102,8 +102,10 @@ class NXR_CONTROL:
         for _ in range(10):
             time.sleep(0.2)
             if rid in self.return_buf[grp][dst]:
-                if self.return_buf[grp][dst][rid]["time"] > t: return True
-        return False
+                if self.return_buf[grp][dst][rid]["time"] > t:
+                    print('got reply', self.return_buf[grp][dst][rid]["rdt"])
+                return True, self.return_buf[grp][dst][rid]["rdt"]
+        return False, None
 
     def req(self, dst, grp, rid):
         t = time.time()

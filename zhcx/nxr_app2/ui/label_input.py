@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Spinbox, StringVar, OptionMenu, Entry
+from tkinter import Frame, Label, Spinbox, StringVar, OptionMenu, Entry, Checkbutton, BooleanVar
 
 
 class LabelSpin(Frame):
@@ -19,14 +19,22 @@ class LabelSpin(Frame):
         self.lb = Label(self.f1, text=text, font=font)
         self.lb.pack(fill='both',  expand=True)
 
+        self.limit = val
         self.sp = Spinbox(self.f2, font=font,
                           from_=val[0], to=val[1], increment=inc)
         self.sp.pack(fill='both',  expand=True)
 
     def get(self):
-        return self.sp.get()
+        valstr = self.sp.get()
+        try:
+            val = float(valstr)
+            val = self.limit[1] if val > self.limit[1] else val
+            val = self.limit[0] if val < self.limit[0] else val
+        except ValueError:
+            val = 0
+        return val
 
-class OnlySpin(Frame):
+class CheckSpin(Frame):
     def __init__(self, parent, width=200, height=50,
                  val=(0,100), inc=1,
                  font=('Times', 12), ratio=0.5):
@@ -41,14 +49,24 @@ class OnlySpin(Frame):
         self.f2.pack_propagate(0)
         self.f2.pack(side='left')
 
-        
+        self.isfloat = BooleanVar(self.f1)
+        self.limit = val
+        self.rd_f = Checkbutton(self.f1, text="float", variable=self.isfloat, onvalue=True, offvalue=False)
+        self.rd_f.pack(side='left', fill="y")
 
         self.sp = Spinbox(self.f2, font=font,
                           from_=val[0], to=val[1], increment=inc)
         self.sp.pack(fill='both',  expand=True)
 
     def get(self):
-        return self.sp.get()
+        valstr = self.sp.get()
+        try:
+            val = float(valstr)
+            val = self.limit[1] if val > self.limit[1] else val
+            val = self.limit[0] if val < self.limit[0] else val
+        except ValueError:
+            val = 0
+        return self.isfloat.get(), val
 
 class LabelMenu(Frame):
     def __init__(self, parent, width=400, height=50,

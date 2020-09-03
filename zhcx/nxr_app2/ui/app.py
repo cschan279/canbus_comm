@@ -38,6 +38,9 @@ class App(tk.Tk):
 
         self.stat = Stat(self)
         self.stat.pack()
+
+        self.custom = Custom(self)
+        self.custom.pack()
         return
 
     def nxr(self):
