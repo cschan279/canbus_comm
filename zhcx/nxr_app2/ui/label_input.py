@@ -51,7 +51,8 @@ class CheckSpin(Frame):
 
         self.isfloat = BooleanVar(self.f1)
         self.limit = val
-        self.rd_f = Checkbutton(self.f1, text="float", variable=self.isfloat, onvalue=True, offvalue=False)
+        self.rd_f = Checkbutton(self.f1, text="float", font=font,
+                                variable=self.isfloat, onvalue=True, offvalue=False)
         self.rd_f.pack(side='left', fill="y")
 
         self.sp = Spinbox(self.f2, font=font,
