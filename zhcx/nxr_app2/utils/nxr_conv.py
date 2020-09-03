@@ -38,7 +38,7 @@ def encode_data(func=0x03, errc=0x00, rid=0x00, rdt=0, isfloat=False):
     if isfloat:
         dat.extend(list(struct.pack('>f',rdt)))
     else:
-        dat.extend(list(struct.pack(">I",rdt)))
+        dat.extend(list(struct.pack(">I",int(rdt))))
     dat = [(dat[i]&0xFF) for i in range(8)]
     print_hex_ls(dat)
     return dat
