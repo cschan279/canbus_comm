@@ -7,6 +7,7 @@ import ui.var
 from utils import nxr_control
 import time
 from threading import Event
+import traceback
 
 
 class App(tk.Tk):
@@ -24,6 +25,7 @@ class App(tk.Tk):
 
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind('<Escape>', self.on_close)
+        self.update()
         return
 
     def ui(self):
@@ -49,6 +51,39 @@ class App(tk.Tk):
     def nxr(self):
         ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev='/dev/ttyUSB0')
         return
+    
+    def getup(self, ts, addr, grp, vid):
+        try:
+            # {"time":t, "rdt":rdt, "err":err}
+            packVal = ui.var.can_dev.return_buf[grp][addr][vid]
+            if packVal['err']: return False, 0
+            if packVal['time']>=(ts+3): return False, 0
+            return True, packVal['rdt']
+        except KeyError:
+            return False, 0
+        except Exception as err:
+            traceback.print_exc()
+            return False, 0
+    
+    def update(self):
+        try:
+            t = time.time()
+            addr, grp = ui.var.eid_mod.get_id()
+            ret, volt = self.getup(t, addr, grp, nxr_control.get_volt_id)
+            if ret:
+                self.volt.val_V.set(volt)
+            ret, curr = self.getup(t, addr, grp, nxr_control.get_curr_id)
+            if ret:
+                self.volt.val_A.set(curr)
+            ret, stat = self.getup(t, addr, grp, nxr_control.get_status_id)
+            if ret:
+                sl = list(f"{stat:032b}")
+                for i in range(32,0,-4): sl.insert(i, " ")
+                val = ''.join(sl[::-1])
+                self.stat.val_S.set(val)
+        except Exception as err:
+            traceback.print_exc()
+        self.after(1, self.update)
 
     def on_close(self):
         ui.var.event.clear()
