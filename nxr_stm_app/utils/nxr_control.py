@@ -10,14 +10,13 @@ set_onoff_id = 0x30
 get_status_id = 0x40
 
 class NXR_CONTROL:
-    def __init__(self, lib_file='./ControlCAN.dll',
-                       can_dev=[1]):
-        self.can_con = can_comm.CanComm(lib_file=lib_file, can_dev=can_dev)
-        self.can_ch = can_dev[0]
-
+    def __init__(self, event, dev='/dev/ttyUSB0'):
+        self.can_con = can_comm.CanComm(event, dev)
+        
+        
         self.sendlist = []
         self.return_buf = [[{}]*256]*8
-        self.loop_ret = True
+        self.event = event
 
         self.lastsend = 0
 
@@ -34,7 +33,7 @@ class NXR_CONTROL:
 
     def loop(self):
         print('loop thread for control')
-        while self.loop_ret:
+        while self.event.is_set():
             self.send()
             self.read()
             self.keepsend()
@@ -56,7 +55,7 @@ class NXR_CONTROL:
             nxr_conv.print_bin_id(fid)
             nxr_conv.print_hex_ls(fdt)
             print("x"*10, "Send", "x"*10)
-            self.can_con.send(self.can_ch, fid, fdt)
+            self.can_con.send(fid, fdt)
             self.lastsend = time.time()
             self.sendlist.pop(0)
         except Exception as e:
@@ -65,7 +64,9 @@ class NXR_CONTROL:
 
     def read(self):
         try:
-            fid, fdt = self.can_con.read(self.can_ch)
+            if not self.can_con.read_buf:
+                return
+            fid, fdt = self.can_con.read()
             if fid and fdt:
                 #print("x"*10, "Read", "x"*10)
                 #nxr_conv.print_bin_id(fid)

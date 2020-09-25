@@ -6,6 +6,7 @@ import ui.var
 #from utils import can_comm
 from utils import nxr_control
 import time
+from threading import Event
 
 
 class App(tk.Tk):
@@ -14,6 +15,8 @@ class App(tk.Tk):
         self.title(title)
         self.headtitle=title
         #ui.var.lock = Lock()
+        ui.var.event = Event()
+        ui.var.event.set()
 
         self.nxr()
 
@@ -44,11 +47,10 @@ class App(tk.Tk):
         return
 
     def nxr(self):
-        ui.var.can_dev = nxr_control.NXR_CONTROL(lib_file='./utils/ControlCAN.dll',
-                                        can_dev=[1])
+        ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev='/dev/ttyUSB0')
         return
 
     def on_close(self):
-        ui.var.can_dev.loop_ret = False
+        ui.var.event.clear()
         self.destroy()
         return
