@@ -4,6 +4,7 @@ import os
 import time
 import serial
 import traceback
+import struct
 from threading import Thread, Event
 
 
@@ -34,7 +35,7 @@ class CanComm:
                 # send if msg in write_buf
                 self.ser.write(self.write_buf.pop(0))
             
-            buf_temp += self.ser.read(14)
+            buf_temp = self.ser.read(14)
             if not buf_temp:
                 #timeout break
                 buf = b''
@@ -60,6 +61,9 @@ class CanComm:
                 buf = b''
                 continue
             self.read_buf.append((buf[1:5],buf[5:13]))
+            #print('#'*30)
+            #print('Received:', (buf[1:5],buf[5:13]))
+            #print('#'*30)
             buf = buf[14:]
         return
 

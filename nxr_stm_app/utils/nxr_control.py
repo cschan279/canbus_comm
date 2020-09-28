@@ -55,7 +55,7 @@ class NXR_CONTROL:
             nxr_conv.print_bin_id(fid)
             nxr_conv.print_hex_ls(fdt)
             print("x"*10, "Send", "x"*10)
-            self.can_con.send(fid, fdt)
+            self.can_con.req_send(fid, fdt)
             self.lastsend = time.time()
             self.sendlist.pop(0)
         except Exception as e:

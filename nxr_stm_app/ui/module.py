@@ -19,7 +19,7 @@ class Target(Frame):
     def get_id(self):
         addr = int(self.addr.get())
         grp = int(self.grp.get())
-        print(addr, grp)
+        #print(addr, grp)
         return addr, grp
 
 class Volt(Frame):

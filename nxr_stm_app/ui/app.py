@@ -49,7 +49,7 @@ class App(tk.Tk):
         return
 
     def nxr(self):
-        ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev='/dev/ttyUSB0')
+        ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev='COM18')
         return
     
     def getup(self, ts, addr, grp, vid):
