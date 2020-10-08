@@ -10,7 +10,7 @@ def encode_id(prono=0x060, ptp=True,dst=0x01,src=0xf0,grp=0x03):
     fid = (fid << 1) + (ptp & 0x1)
     fid = (fid << 8) + (dst & 0xFF)
     fid = (fid << 8) + (src & 0xFF)
-    fid = (fid << 3) + (src & 0x7)
+    fid = (fid << 3) + (grp & 0x7)
     return fid
 
 def decode_id(fid):
