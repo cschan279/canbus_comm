@@ -76,6 +76,9 @@ class CanComm:
             cs = 0
             for i in range(1,13): cs^=msg[i]
             msg += struct.pack('B',cs)
+            tcs = 0
+            for i in range(1,14): tcs^=msg[i]
+            print('tcs', tcs)
             self.write_buf.append(msg)
             return True
         except Exception as err:

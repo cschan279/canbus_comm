@@ -25,7 +25,7 @@ class App(tk.Tk):
 
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind('<Escape>', self.on_close)
-        self.update()
+        #self.update()
         return
 
     def ui(self):
