@@ -5,7 +5,7 @@ import struct
 #struct.unpack('f', bytearray(x.reverse()))
 
 
-def encode_id(prono=0x060, ptp=True,dst=0x01,src=0xf0,grp=0x03):
+def encode_id(prono=0x060, ptp=True,dst=0x01,src=0xff,grp=0x03):
     fid = (prono & 0x1ff)
     fid = (fid << 1) + (ptp & 0x1)
     fid = (fid << 8) + (dst & 0xFF)

@@ -20,7 +20,7 @@ class NXR_CONTROL:
 
         self.lastsend = 0
 
-        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
+        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xff, grp=0x7)
         self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
 
         self.th = Thread(target=self.loop)
@@ -86,11 +86,11 @@ class NXR_CONTROL:
 
     def new_rec(self, grp, src, rid, rdt, err):
         if err:
-            print(f'Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}')
+            print(f"Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}", end='\r')
             return
         t = time.time()
         dt_pack = {"time":t, "rdt":rdt, "err":err}
-        print('##############', dt_pack)
+        print('###_New_Record_###', dt_pack)
         #if not err: print(f">>>>>>[{t}]: {rid:04x} data from {grp:x}-{src:02x} as {rdt}")
         self.return_buf[grp][src][rid] = dt_pack
         #self.return_buf[grp][src][rid]['rdt'] = rdt

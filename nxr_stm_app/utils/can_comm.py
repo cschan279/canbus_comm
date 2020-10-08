@@ -65,6 +65,7 @@ class CanComm:
             #print('Received:', (buf[1:5],buf[5:13]))
             #print('#'*30)
             buf = buf[14:]
+        print("CanComm loop End")
         return
 
     def req_send(self, id_sect, data_sect):
@@ -78,7 +79,8 @@ class CanComm:
             msg += struct.pack('B',cs)
             tcs = 0
             for i in range(1,14): tcs^=msg[i]
-            print('tcs', tcs)
+            if tcs: print('tcs non zero:', tcs)
+            print(msg)
             self.write_buf.append(msg)
             return True
         except Exception as err:

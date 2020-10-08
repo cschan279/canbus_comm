@@ -67,13 +67,14 @@ class NXR_CONTROL:
         try:
             fid, fdt = self.can_con.read(self.can_ch)
             if fid and fdt:
-                #print("x"*10, "Read", "x"*10)
-                #nxr_conv.print_bin_id(fid)
-                #nxr_conv.print_hex_ls(fdt)
+                print("x"*10, "Read", "x"*10)
+                nxr_conv.print_bin_id(fid)
+                nxr_conv.print_hex_ls(fdt)
+                
                 pro, ptp, dst, src, grp = nxr_conv.decode_id(fid)
                 err, rid, isfloat, rdt = nxr_conv.decode_data(fdt)
                 #nxr_conv.print_hex_ls([grp, src, rid, err])
-                #print("x"*10, "Read", "x"*10)
+                print("x"*10, "Read", "x"*10)
                 if rid in [0x40, 0x43]:
                     print("*"*30)
                     nxr_conv.print_hex_ls(fdt)
@@ -85,7 +86,7 @@ class NXR_CONTROL:
 
     def new_rec(self, grp, src, rid, rdt, err):
         if err:
-            print(f'Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}')
+            print(f'Error Msg: {grp:x}-{src:02x}-{rid:04x}={err}+{rdt}', end='\r')
             return
         t = time.time()
         dt_pack = {"time":t, "rdt":rdt, "err":err}
