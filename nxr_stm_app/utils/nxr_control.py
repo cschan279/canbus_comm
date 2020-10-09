@@ -20,7 +20,7 @@ class NXR_CONTROL:
 
         self.lastsend = 0
 
-        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xff, grp=0x7)
+        self.bc_id = nxr_conv.encode_id(ptp=False, dst=0xff, src=0xf0, grp=0x3)
         self.bc_dt = nxr_conv.encode_data(func=0x10, rid=0x43, rdt=0, isfloat=False)
 
         self.th = Thread(target=self.loop)
