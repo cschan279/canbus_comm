@@ -11,7 +11,7 @@ import traceback
 
 
 class App(tk.Tk):
-    def __init__(self, title="NXR", delay=500):
+    def __init__(self, title="NXR", delay=500, dev='COM18'):
         super().__init__()
         self.title(title)
         self.headtitle=title
@@ -19,7 +19,7 @@ class App(tk.Tk):
         ui.var.event = Event()
         ui.var.event.set()
 
-        self.nxr()
+        self.nxr(dev=dev)
 
         self.ui()
 
@@ -48,8 +48,8 @@ class App(tk.Tk):
         self.custom.pack()
         return
 
-    def nxr(self):
-        ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev='COM18')
+    def nxr(self, dev='COM18'):
+        ui.var.can_dev = nxr_control.NXR_CONTROL(ui.var.event, dev=dev)
         return
     
     def getup(self, ts, addr, grp, vid):
