@@ -2,9 +2,9 @@ from ui import app
 import configparser
 c = configparser.ConfigParser()
 c.read('usb.ini')
-
-
-win = app.App(dev=c['USB']['PORT'])
+dev=c['USB']['PORT']
+print("Connect via", dev)
+win = app.App(dev=dev)
 
 win.mainloop()
 x = input('Enter to Quit')
