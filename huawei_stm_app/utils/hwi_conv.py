@@ -70,5 +70,6 @@ def decode_data(data_ls):
     print(errc, rid, end=' ')
     for i in range(2,8): print(bin(data_ls[i]), end=' ')
     print()
+    rdt = data_ls[2:8]
     #print_hex_ls(data_ls)
     return errc, rid, rdt
