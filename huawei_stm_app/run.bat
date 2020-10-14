@@ -1,2 +1,2 @@
-cd C:\Users\user\Desktop\test_can\canbus_comm\nxr_stm_app
-python ./main_app.py
+cd C:\Users\user\Desktop\test_can\canbus_comm\huawei_stm_app
+python ./test_send.py
