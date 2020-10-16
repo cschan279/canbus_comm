@@ -15,12 +15,21 @@ def encode_id(prono=0x0d, dst=0x01,cmd=0xff,ms=0x1, cnt=0x0):
     return fid
 
 def decode_id(fid):
+    #print(bin(fid))
     rest, cnt = divmod(fid, 2**1)
+    #print(bin(rest))
     rest = rest >> 6
+    #print(bin(rest))
     rest, ms = divmod(rest, 2**1)
-    rest, cmd = divmod(rest, 2**7)
-    pro, src = divmod(rest, 2**8)
-    print('from addr:', hex(src))
+    #print(bin(rest))
+    rest, cmd = divmod(rest, 2**8)
+    #print(bin(rest))
+    pro, src = divmod(rest, 2**7)
+    print('from addr:', hex(src), end='  ')
+    print('cmd:', hex(cmd), end='  ')
+    print("Master" if ms else "Slave", end="  ")
+    print("continue" if cnt else "End")
+    #print(bin(pro), bin(src), bin(cmd), ms, cnt)
     return pro, src, cmd, ms, cnt
 
 def print_hex_ls(ls):
