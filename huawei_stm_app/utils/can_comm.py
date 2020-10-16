@@ -80,7 +80,7 @@ class CanComm:
             tcs = 0
             for i in range(1,14): tcs^=msg[i]
             if tcs: print('tcs non zero:', tcs)
-            print(msg)
+            #print(msg)
             self.write_buf.append(msg)
             return True
         except Exception as err:

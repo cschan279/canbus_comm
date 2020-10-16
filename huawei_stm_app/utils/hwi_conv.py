@@ -20,6 +20,7 @@ def decode_id(fid):
     rest, ms = divmod(rest, 2**1)
     rest, cmd = divmod(rest, 2**7)
     pro, src = divmod(rest, 2**8)
+    print('from addr:', hex(src))
     return pro, src, cmd, ms, cnt
 
 def print_hex_ls(ls):
@@ -61,7 +62,7 @@ def encode_data(errc=0x0, rid=0xfff, rdt=[0], rtp=[6]):
         if rest_len <= 0:
             dat = dat[8]
             break
-    print_hex_ls(dat)
+    #print_hex_ls(dat)
     return dat
 
 def decode_data(data_ls):
